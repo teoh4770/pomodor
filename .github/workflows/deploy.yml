@@ -22,10 +22,10 @@ jobs:
         uses: actions/setup-node@v3
       # install the project dependencies
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        uses: pnpm i
       # build project using the npm build script
       - name: Build project
-        run: npm run build
+        run: pnpm run build
       # upload the build files from the ./dist directory
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
