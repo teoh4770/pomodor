@@ -1,0 +1,89 @@
+Basic Pomodoro Timer Checklist:
+  - [ ] Create timer
+  - [ ] Stop timer
+  - [ ] Reset timer
+  - [ ] Update focus/break time
+  - [ ] Notify timer's up
+  - [ ] Have Deep Work Mode and Break Time mode
+  - [ ] Create todo list
+  - [ ] Select a todo to work on
+  - [ ] See the current todo that you work on
+  - [ ] Celebrate banner when all the todos are complete
+  - [ ] Edit single todo
+  - [ ] Remove single todo
+  - [ ] Complete single todo
+  - [ ] Set priority of todo
+  - [ ] Add note to a single todo
+  - [ ] Remove all todos
+  - [ ] Remove all completed todos
+  - [ ] Reset all todos' completed status and Pomodoro sessions
+  - [ ] Have completed, non-completed, and all todo list views
+  - [ ] Create settings pop-up
+      - [ ] Change username
+      - [ ] Alarm sounds
+      - [ ] Color themes
+      - [ ] Background sounds
+  - [ ] Save user data (todos, settings, Pomodoro sessions)
+      - [ ] Save user data in the database
+      - [ ] Retrieve user data on login
+
+Advanced Pomodoro Timer Checklist:
+  - [ ] Create and manage projects (a project contains related tasks)
+  - [ ] Remove project
+  - [ ] Edit project name
+  - [ ] Estimate your finish time of the day
+  - [ ] Create weekly visual report: see how much time you've focused each day
+  - [ ] Create monthly visual report: see how much time you've focused each week
+  - [ ] Create yearly visual report: see how much time you've focused every year
+  - [ ] Different project visual reports (e.g., all tasks, Project A, Project B)
+  - [ ] Create templates
+  - [ ] Integrate with Todoist Inbox
+  - [ ] Create shortcuts
+
+User Stories:
+  - [ ] As a user, I want to start a timer so that I can focus for a fixed period.
+  - [ ] As a user, I want to stop a timer so that I can pause work if needed.
+  - [ ] As a user, I want to reset the timer so that I can restart a session if interrupted.
+  - [ ] As a user, I want to update the focus and break time so that the timer fits my schedule.
+  - [ ] As a user, I want to switch between Deep Work Mode and Break Time mode so that I can focus or relax appropriately.
+  - [ ] As a user, I want a notification when the timer ends so that I know when to switch tasks.
+  - [ ] As a user, I want to create todos so that I can track my tasks.
+  - [ ] As a user, I want to select a todo to work on so that I can focus on one task at a time.
+  - [ ] As a user, I want to see the current todo I’m working on so that I stay organized.
+  - [ ] As a user, I want to edit a single todo so that I can update task details.
+  - [ ] As a user, I want to remove a single todo so that I can declutter my list.
+  - [ ] As a user, I want to mark a todo as completed so that I can track progress.
+  - [ ] As a user, I want to prioritize tasks so that I focus on what matters most.
+  - [ ] As a user, I want to add notes to a task so that I remember important details.
+  - [ ] As a user, I want to remove all todos so that I can reset my list.
+  - [ ] As a user, I want to remove only completed todos so that I keep my list tidy.
+  - [ ] As a user, I want to reset all completed statuses and Pomodoro sessions so that I can start fresh.
+  - [ ] As a user, I want to customize my username so that the app feels personal.
+  - [ ] As a user, I want to choose alarm sounds so that notifications suit my preferences.
+  - [ ] As a user, I want to switch color themes so that the interface is visually comfortable.
+  - [ ] As a user, I want background sounds so that I feel more relaxed while working.
+  - [ ] As a user, I want my todos, settings, and Pomodoro sessions saved so that I can retrieve them later.
+  - [ ] As a user, I want to log in and see my saved data so that I can resume where I left off.
+  - [ ] As a user, I want a weekly report so that I can review my daily focus time.
+  - [ ] As a user, I want a monthly report so that I can analyze my weekly focus patterns.
+  - [ ] As a user, I want a yearly report so that I can evaluate long-term trends.
+  - [ ] As a user, I want project-specific reports so that I can assess time spent on different projects.
+  - [ ] As a user, I want templates so that I can quickly add recurring tasks.
+  - [ ] As a user, I want to integrate with Todoist Inbox so that I can sync my tasks.
+  - [ ] As a user, I want keyboard shortcuts so that I can navigate the app faster.
+
+Engineer Stories:
+  - [ ] As an engineer, I want unit tests for core components so that I can ensure they work as expected.
+  - [ ] As an engineer, I want integration tests for features like the todo list so that user flows are reliable.
+  - [ ] As an engineer, I want end-to-end tests for the timer and notifications so that the app behaves correctly across scenarios.
+  - [ ] As an engineer, I want to use DRY (Don't Repeat Yourself) principles so that the codebase is maintainable.
+  - [ ] As an engineer, I want modularized components so that features are reusable and scalable.
+  - [ ] As an engineer, I want clear folder structures for frontend, backend, and shared utilities so that the project is easy to navigate.
+  - [ ] As an engineer, I want to save user data (todos, settings, Pomodoro sessions) to Firebase so that data persists across sessions.
+  - [ ] As an engineer, I want to retrieve user data from Firebase when they log in so that their app state is restored.
+  - [ ] As an engineer, I want secure authentication for users so that only authorized users can access their data.
+  - [ ] As an engineer, I want to optimize database writes and reads to reduce latency and cost.
+  - [ ] As an engineer, I want to handle offline scenarios gracefully so that users can work without an internet connection and sync later.
+  - [ ] As an engineer, I want error handling for database operations so that users are informed if data fails to load or save.
+  - [ ] As an engineer, I want robust validation for todo inputs and settings so that invalid data doesn’t break the app.
+  - [ ] As an engineer, I want to follow accessibility best practices so that the app is usable by all users.
