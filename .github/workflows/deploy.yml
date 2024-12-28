@@ -20,12 +20,15 @@ jobs:
       # setup node.js environment
       - name: Setup Node
         uses: actions/setup-node@v3
+      # install pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
       # install the project dependencies
       - name: Install dependencies
-        run: pnpm i
-      # build project using the npm build script
+        run: pnpm install
+      # build project using pnpm build script
       - name: Build project
-        run: npm run build
+        run: pnpm run build
       # upload the build files from the ./dist directory
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
