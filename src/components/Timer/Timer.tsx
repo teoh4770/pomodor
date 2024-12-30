@@ -13,8 +13,8 @@ const Timer = () => {
     >
       <Modes
         mode={timer.mode}
-        onPomodoroClick={timer.handlePomodoroClick}
-        onBreakClick={timer.handleBreakClick}
+        onPomodoroClick={timer.handlePomodoroMode}
+        onBreakClick={timer.handleBreakMode}
       />
       <Time
         minutes={Math.floor(timer.remainingTime / 60)}
@@ -23,7 +23,7 @@ const Timer = () => {
       <Controls
         isRunning={timer.isRunning}
         onToggle={timer.handleToggle}
-        onReset={timer.handleReset}
+        onSkip={timer.handleNextMode}
       />
     </article>
   );

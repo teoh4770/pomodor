@@ -3,10 +3,10 @@ import NextIcon from "/next-white.png";
 interface ControlsProps {
   isRunning: boolean;
   onToggle: () => void;
-  onReset: () => void;
+  onSkip: () => void;
 }
-// !instead of reset button, go to the next mode
-const Controls = ({ isRunning, onToggle, onReset }: ControlsProps) => {
+
+const Controls = ({ isRunning, onToggle, onSkip }: ControlsProps) => {
   return (
     <div className="flex justify-center" aria-label="Timer controls">
       <div className="relative">
@@ -20,12 +20,12 @@ const Controls = ({ isRunning, onToggle, onReset }: ControlsProps) => {
         >
           {isRunning ? "Pause" : "Start"}
         </button>
-        {/* ?fixed here */}
+
         <button
           className="button absolute -right-2 h-full translate-x-full"
           data-size="sm"
-          onClick={onReset}
-          aria-label="Reset timer"
+          onClick={onSkip}
+          aria-label="Skip current session"
         >
           <img className="h-8 w-8" src={NextIcon} alt="" />
         </button>

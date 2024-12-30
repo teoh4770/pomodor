@@ -10,13 +10,13 @@ interface IUseTimer {
   remainingTime: number;
   isRunning: boolean;
   handleToggle: () => void;
-  handleReset: () => void;
-  handlePomodoroClick: () => void;
-  handleBreakClick: () => void;
+  handleNextMode: () => void;
+  handlePomodoroMode: () => void;
+  handleBreakMode: () => void;
 }
 
 const useTimer = (): IUseTimer => {
-  // Constants (If exists)
+  // Constants
   const timerMode = {
     [TimerModeEnum.pomodoro]: 25,
     [TimerModeEnum.break]: 1,
@@ -35,8 +35,7 @@ const useTimer = (): IUseTimer => {
   /******************/
   /* Timer Effects  */
   /******************/
-  // Timer Logic
-
+  // Show remaining time on title
   useEffect(() => {
     const minutes = formatTime(Math.floor(remainingTime / 60));
     const seconds = formatTime(remainingTime % 60);
@@ -44,6 +43,7 @@ const useTimer = (): IUseTimer => {
     document.title = `${minutes}:${seconds}`;
   }, [remainingTime]);
 
+  // Timer Logic
   const timerRef = useRef<number>();
   useEffect(() => {
     const notifyUser = () => {
@@ -79,17 +79,29 @@ const useTimer = (): IUseTimer => {
     playSound(ClickSound);
   };
 
-  const handleReset = () => {
-    setIsRunning(false);
-    setElapsedTime(0);
+  const handleNextMode = () => {
+    setMode((prev) =>
+      prev === TimerModeEnum.pomodoro
+        ? TimerModeEnum.break
+        : TimerModeEnum.pomodoro,
+    );
+    handleReset();
   };
 
-  const handlePomodoroClick = () => {
+  const handlePomodoroMode = () => {
     setMode(TimerModeEnum.pomodoro);
   };
 
-  const handleBreakClick = () => {
+  const handleBreakMode = () => {
     setMode(TimerModeEnum.break);
+  };
+
+  /******************/
+  /*  Helper func   */
+  /******************/
+  const handleReset = () => {
+    setIsRunning(false);
+    setElapsedTime(0);
   };
 
   return {
@@ -97,9 +109,9 @@ const useTimer = (): IUseTimer => {
     remainingTime,
     isRunning,
     handleToggle,
-    handleReset,
-    handlePomodoroClick,
-    handleBreakClick,
+    handleNextMode,
+    handlePomodoroMode,
+    handleBreakMode,
   };
 };
 
