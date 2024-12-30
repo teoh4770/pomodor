@@ -6,7 +6,7 @@ interface TabsProps {
   onBreakClick: () => void;
 }
 
-// Switch between pomodoro mode and break time mode
+// Switch between different timer mode
 const Modes = ({ mode, onPomodoroClick, onBreakClick }: TabsProps) => {
   return (
     <div>

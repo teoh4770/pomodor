@@ -13,4 +13,11 @@ const playSound = (src: string) => {
   }
 };
 
-export { playSound };
+function formatTime(time: number) {
+  if (time < 0) {
+    time = 0;
+  }
+  return time >= 10 ? time : "0" + time;
+}
+
+export { playSound, formatTime };

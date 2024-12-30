@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
 import { TimerModeEnum } from "../types/enums";
-import { playSound } from "../utils";
+import { formatTime, playSound } from "../utils";
+import { toast } from "react-toastify";
 
 interface IUseTimer {
   mode: TimerModeEnum;
@@ -18,7 +19,7 @@ const useTimer = (): IUseTimer => {
   // Constants (If exists)
   const timerMode = {
     [TimerModeEnum.pomodoro]: 25,
-    [TimerModeEnum.break]: 5,
+    [TimerModeEnum.break]: 1,
   };
 
   // States
@@ -35,19 +36,31 @@ const useTimer = (): IUseTimer => {
   /* Timer Effects  */
   /******************/
   // Timer Logic
+
+  useEffect(() => {
+    const minutes = formatTime(Math.floor(remainingTime / 60));
+    const seconds = formatTime(remainingTime % 60);
+
+    document.title = `${minutes}:${seconds}`;
+  }, [remainingTime]);
+
   const timerRef = useRef<number>();
   useEffect(() => {
+    const notifyUser = () => {
+      toast.success("You have finish a session!");
+      playSound(RingSound);
+    };
+
     // Guard: Handle timer end state
     if (isTimerEnd) {
       clearInterval(timerRef.current);
       handleReset();
-      playSound(RingSound);
+      notifyUser();
       return;
     }
 
     if (isRunning) {
       const MILLISECONDS = 1000;
-
       timerRef.current = window.setInterval(() => {
         setElapsedTime((prev) => prev + 1);
       }, MILLISECONDS);

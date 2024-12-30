@@ -1,13 +1,8 @@
+import { formatTime } from "../../utils";
+
 interface TimeProps {
   minutes: number;
   seconds: number;
-}
-
-function formatTime(time: number) {
-  if (time < 0) {
-    time = 0;
-  }
-  return time >= 10 ? time : "0" + time;
 }
 
 const Time = ({ minutes, seconds }: TimeProps) => {
