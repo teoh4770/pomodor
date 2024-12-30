@@ -53,8 +53,6 @@ body {
 
   /* Button Style Type */
   &[data-type="primary"] {
-    
-
     background-color: white;
     color: var(--primary-color);
 
@@ -103,7 +101,6 @@ body {
       background-color: rgba(0 0 0 / 0.2);
       font-weight: bold;
       opacity: 1;
-      transform: translateY(0.125rem);
     }
   }
 
