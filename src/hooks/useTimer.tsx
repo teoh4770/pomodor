@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
 import { TimerModeEnum } from "../types/enums";
@@ -15,10 +15,10 @@ interface IUseTimer {
   handleBreakMode: () => void;
 }
 
-const useTimer = (): IUseTimer => {
+const useTimer = (onTimerEnd?: () => void): IUseTimer => {
   // Constants
   const timerMode = {
-    [TimerModeEnum.pomodoro]: 25,
+    [TimerModeEnum.pomodoro]: 2,
     [TimerModeEnum.break]: 1,
   };
 
@@ -31,6 +31,48 @@ const useTimer = (): IUseTimer => {
   const interval = timerMode[mode];
   const remainingTime = interval - elapsedTime;
   const isTimerEnd = interval <= elapsedTime;
+
+  /******************/
+  /* Timer Handlers */
+  /******************/
+  const handleToggle = () => {
+    setIsRunning((prev) => !prev);
+    playSound(ClickSound);
+  };
+
+  const handleNextMode = useCallback(() => {
+    if (onTimerEnd) onTimerEnd();
+
+    toggleMode();
+    reset();
+    notifyUser();
+
+    function toggleMode() {
+      setMode((prev) =>
+        prev === TimerModeEnum.pomodoro
+          ? TimerModeEnum.break
+          : TimerModeEnum.pomodoro,
+      );
+    }
+
+    function reset() {
+      setIsRunning(false);
+      setElapsedTime(0);
+    }
+
+    function notifyUser() {
+      toast.success("You have finished a session!");
+      playSound(RingSound);
+    }
+  }, [onTimerEnd]);
+
+  const handlePomodoroMode = () => {
+    setMode(TimerModeEnum.pomodoro);
+  };
+
+  const handleBreakMode = () => {
+    setMode(TimerModeEnum.break);
+  };
 
   /******************/
   /* Timer Effects  */
@@ -46,63 +88,30 @@ const useTimer = (): IUseTimer => {
   // Timer Logic
   const timerRef = useRef<number>();
   useEffect(() => {
-    const notifyUser = () => {
-      toast.success("You have finish a session!");
-      playSound(RingSound);
-    };
-
-    // Guard: Handle timer end state
-    if (isTimerEnd) {
-      clearInterval(timerRef.current);
-      handleReset();
-      notifyUser();
-      return;
-    }
-
-    if (isRunning) {
+    const startTimer = () => {
       const MILLISECONDS = 1000;
       timerRef.current = window.setInterval(() => {
         setElapsedTime((prev) => prev + 1);
       }, MILLISECONDS);
+    };
+
+    const stopTimer = () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+
+    // Guard: Handle timer end state
+    if (isTimerEnd) {
+      stopTimer();
+      handleNextMode();
+      return;
     }
 
-    return () => {
-      clearInterval(timerRef.current);
-    };
-  }, [isRunning, isTimerEnd]);
+    if (isRunning) {
+      startTimer();
+    }
 
-  /******************/
-  /* Timer Handlers */
-  /******************/
-  const handleToggle = () => {
-    setIsRunning((prev) => !prev);
-    playSound(ClickSound);
-  };
-
-  const handleNextMode = () => {
-    setMode((prev) =>
-      prev === TimerModeEnum.pomodoro
-        ? TimerModeEnum.break
-        : TimerModeEnum.pomodoro,
-    );
-    handleReset();
-  };
-
-  const handlePomodoroMode = () => {
-    setMode(TimerModeEnum.pomodoro);
-  };
-
-  const handleBreakMode = () => {
-    setMode(TimerModeEnum.break);
-  };
-
-  /******************/
-  /*  Helper func   */
-  /******************/
-  const handleReset = () => {
-    setIsRunning(false);
-    setElapsedTime(0);
-  };
+    return stopTimer;
+  }, [handleNextMode, isRunning, isTimerEnd]);
 
   return {
     mode,
