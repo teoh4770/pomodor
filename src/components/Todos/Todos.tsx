@@ -23,7 +23,7 @@ const TodoItem = ({ todo, handlers }: TodoItemProp) => {
   );
 
   const Session = (
-    <div className="sessions text-right text-sm">
+    <div className="text-right text-sm">
       <p>
         <b className="text-lg font-bold">{todo.completedSessions}</b>/
         {todo.targetSessions}
@@ -47,7 +47,7 @@ const TodoItem = ({ todo, handlers }: TodoItemProp) => {
   );
 
   const Description = todo.description && (
-    <div className="description hidden">
+    <div aria-label="Todo description">
       <label className="hidden" htmlFor={"description-" + todo.id}>
         description
       </label>
@@ -65,6 +65,8 @@ const TodoItem = ({ todo, handlers }: TodoItemProp) => {
       <div
         className="cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3"
         role="button"
+        tabIndex={0}
+        data-active={false}
       >
         {/* contains checkbox, session and edit button */}
         <div className="flex items-center justify-between">
@@ -74,6 +76,7 @@ const TodoItem = ({ todo, handlers }: TodoItemProp) => {
             {EditButton}
           </div>
         </div>
+
         {/* contain description */}
         {Description}
       </div>
@@ -86,7 +89,7 @@ const Todos = () => {
   const { todos, handlers } = useTodo();
 
   const TodoList = todos.map((todo, index) => (
-    <TodoItem todo={todo} handlers={handlers} />
+    <TodoItem key={index} todo={todo} handlers={handlers} />
   ));
 
   return (
