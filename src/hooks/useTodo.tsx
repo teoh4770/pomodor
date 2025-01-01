@@ -62,8 +62,7 @@ const useTodo = (): IUseTodo => {
   const [activeTodoId, setActiveTodoId] = useState("");
 
   // Derived variables
-  const activeTodo =
-    todos.find((todo) => todo.id === activeTodoId) || todos[0] || null;
+  const activeTodo = todos.find((todo) => todo.id === activeTodoId) || null;
 
   /******************/
   /* Todos Handlers */
