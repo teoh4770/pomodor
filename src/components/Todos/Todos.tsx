@@ -3,10 +3,15 @@ import { Todo } from "./Todo";
 
 /* Should contain message, label, action buttons, list, form, form toggle button */
 const Todos = () => {
-  const { todos, handlers } = useTodo();
+  const { todos, activeTodoId, handlers } = useTodo();
 
   const TodoList = todos.map((todo, index) => (
-    <Todo key={index} todo={todo} handlers={handlers} />
+    <Todo
+      key={index}
+      todo={todo}
+      isActive={todo.id === activeTodoId}
+      handlers={handlers}
+    />
   ));
 
   return (

@@ -14,6 +14,7 @@ interface ITodoForm {
 }
 
 interface ITodoHandlers {
+  handleActive: (id: string) => void;
   handleAdd: (formData: ITodoForm) => void;
   handleEdit: (id: string, formData: ITodoForm) => void;
   handleRemove: (id: string) => void;

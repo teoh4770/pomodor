@@ -1,11 +1,14 @@
+import clsx from "clsx";
+
 import { ITodo, ITodoHandlers } from "../../types";
 
 interface TodoProp {
   todo: ITodo;
+  isActive: boolean;
   handlers: ITodoHandlers;
 }
 
-const Todo = ({ todo, handlers }: TodoProp) => {
+const Todo = ({ todo, isActive, handlers }: TodoProp) => {
   const Checkbox = (
     <>
       <input
@@ -13,7 +16,7 @@ const Todo = ({ todo, handlers }: TodoProp) => {
         id={"todo-" + todo.id}
         className="checkbox peer"
         checked={todo.completed}
-        onClick={() => handlers.handleToggle(todo.id)}
+        onChange={() => handlers.handleToggle(todo.id)}
       />
       <label htmlFor={"todo-" + todo.id} className="peer-checked:line-through">
         {todo.title}
@@ -54,31 +57,36 @@ const Todo = ({ todo, handlers }: TodoProp) => {
         id={"description-" + todo.id}
         name="description"
         value={todo.description}
+        onChange={() => console.log("update description")}
         className="pointer-events-none w-full cursor-none resize-none rounded-lg bg-[#feff9c]/80 p-3 text-sm shadow-md"
       ></textarea>
     </div>
   );
 
-  return (
-    <li>
-      <div
-        className="cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3"
-        role="button"
-        tabIndex={0}
-        data-active={false}
-      >
-        {/* contains checkbox, session and edit button */}
-        <div className="flex items-center justify-between">
-          <div className="form-control">{Checkbox}</div>
-          <div className="flex items-center gap-4">
-            {Session}
-            {EditButton}
-          </div>
-        </div>
+  const todoStyle = clsx(
+    "cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3 -outline-offset-4 hover:outline hover:outline-4 hover:outline-slate-300",
+    { "outline outline-4 outline-black hover:outline-black": isActive },
+  );
 
-        {/* contain description */}
-        {Description}
+  return (
+    <li
+      className={todoStyle}
+      role="button"
+      tabIndex={0}
+      data-active={isActive}
+      onClick={() => handlers.handleActive(todo.id)}
+    >
+      {/* contains checkbox, session and edit button */}
+      <div className="flex items-center justify-between">
+        <div className="form-control">{Checkbox}</div>
+        <div className="flex items-center gap-4">
+          {Session}
+          {EditButton}
+        </div>
       </div>
+
+      {/* contain description */}
+      {Description}
     </li>
   );
 };

@@ -58,6 +58,7 @@ const useTodo = (): IUseTodo => {
       completedSessions: 2,
     },
   ]);
+
   const [activeTodoId, setActiveTodoId] = useState("");
 
   // Derived variables
@@ -67,6 +68,10 @@ const useTodo = (): IUseTodo => {
   /******************/
   /* Todos Handlers */
   /******************/
+  function handleActive(todoId: string) {
+    setActiveTodoId(todoId);
+  }
+
   function handleAdd(formData: ITodoForm) {
     const newTodoId = self.crypto.randomUUID();
     const newTodos: ITodo[] = [
@@ -114,7 +119,7 @@ const useTodo = (): IUseTodo => {
     });
 
     setTodos(updatedTodos);
-    // select next incomplete todo
+    // todo: select next incomplete todo
   }
 
   /******************/
@@ -135,6 +140,7 @@ const useTodo = (): IUseTodo => {
     activeTodoId,
     activeTodo,
     handlers: {
+      handleActive,
       handleAdd,
       handleEdit,
       handleRemove,
