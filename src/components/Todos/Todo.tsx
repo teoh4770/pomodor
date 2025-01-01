@@ -64,8 +64,11 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
   );
 
   const todoStyle = clsx(
-    "cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3 -outline-offset-4 hover:outline hover:outline-4 hover:outline-slate-300",
-    { "outline outline-4 outline-black hover:outline-black": isActive },
+    "cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3 -outline-offset-4 hover:outline hover:outline-4",
+    {
+      "outline outline-4 outline-black hover:outline-black": isActive,
+      "hover:outline-slate-300": !isActive,
+    },
   );
 
   return (
