@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { ITodo, ITodoForm, ITodoHandlers } from "../types/types";
 
-interface IUseTodo {
+export interface TodoHook {
   todos: ITodo[];
   activeTodo: ITodo | null;
   activeTodoId: string;
+  incrementSession: () => void;
   handlers: ITodoHandlers;
 }
 
-const useTodo = (): IUseTodo => {
+const useTodo = (): TodoHook => {
   // Constants
 
   // States
@@ -121,6 +122,17 @@ const useTodo = (): IUseTodo => {
     // todo: select next incomplete todo
   }
 
+  function incrementSession() {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === activeTodoId) {
+        todo.completedSessions += 1;
+      }
+      return todo;
+    });
+
+    setTodos(updatedTodos);
+  }
+
   /******************/
   /* Todos Effects  */
   /******************/
@@ -138,6 +150,7 @@ const useTodo = (): IUseTodo => {
     todos,
     activeTodoId,
     activeTodo,
+    incrementSession,
     handlers: {
       handleActive,
       handleAdd,
