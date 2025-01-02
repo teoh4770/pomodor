@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
-import { TimerModeEnum } from "../types/enums";
+import { TimerModeEnum } from "../types";
 import { formatTime, playSound } from "../utils";
 import { toast } from "react-toastify";
 
-interface IUseTimer {
+export interface TimerHook {
   mode: TimerModeEnum;
   remainingTime: number;
   isRunning: boolean;
@@ -15,7 +15,7 @@ interface IUseTimer {
   handleBreakMode: () => void;
 }
 
-const useTimer = (onTimerEnd?: () => void): IUseTimer => {
+const useTimer = (onTimerEnd?: () => void): TimerHook => {
   // Constants
   const timerMode = {
     [TimerModeEnum.pomodoro]: 2,
@@ -41,6 +41,7 @@ const useTimer = (onTimerEnd?: () => void): IUseTimer => {
   };
 
   const handleNextMode = useCallback(() => {
+    // timer end handler, allow integration with instances other than timer
     if (onTimerEnd) onTimerEnd();
 
     toggleMode();

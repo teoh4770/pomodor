@@ -1,4 +1,4 @@
-import { TimerModeEnum } from "../../types/enums";
+import { TimerModeEnum } from "../../types";
 
 interface TabsProps {
   mode: TimerModeEnum;

@@ -3,4 +3,4 @@ enum TimerModeEnum {
   "break",
 }
 
-export { TimerModeEnum }
+export { TimerModeEnum };
