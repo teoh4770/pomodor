@@ -1,12 +1,11 @@
 import { Time } from "./Time";
 import { Controls } from "./Controls";
 import { Modes } from "./Modes";
-import { useAppContext } from "../../context/useAppContext";
+import { useSessionContext, useTimerContext } from "../../context";
 
 const Timer = () => {
-  const { timer, session } = useAppContext();
-
-  if (!timer || !session) return;
+  const timer = useTimerContext();
+  const session = useSessionContext();
 
   return (
     <div>

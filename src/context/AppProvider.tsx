@@ -5,12 +5,20 @@ import { TimerHook } from "../hooks/useTimer";
 import { TodoHook } from "../hooks/useTodo";
 import { TimerModeEnum } from "../types";
 
-const AppContext = createContext<{
-  timer: TimerHook | null;
-  session: SessionHook | null;
-  todo: TodoHook | null;
-}>({ timer: null, session: null, todo: null });
+interface IAppContext {
+  timer: TimerHook | undefined;
+  session: SessionHook | undefined;
+  todo: TodoHook | undefined;
+}
 
+// Create app context with default value
+const AppContext = createContext<IAppContext>({
+  timer: undefined,
+  session: undefined,
+  todo: undefined,
+});
+
+// Create AppProvider to provide hooks to the consumers
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const timer = useTimer(handleTimerEnd);
   const session = useSession();

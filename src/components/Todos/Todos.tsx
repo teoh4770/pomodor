@@ -1,31 +1,29 @@
-import { useAppContext } from "../../context/useAppContext";
+import { useTodoContext } from "../../context";
 import { Todo } from "./Todo";
 
 const Todos = () => {
-  const { todo: todoHook } = useAppContext();
+  const todo = useTodoContext();
 
-  if (!todoHook) return;
-
-  const activeTodoMessage = todoHook.activeTodo ? (
+  const activeTodoMessage = todo.activeTodo ? (
     <p className="text-slate-300">
       Currently focusing on:
       <br />
-      <b className="text-lg text-white">{todoHook.activeTodo.title}</b>
+      <b className="text-lg text-white">{todo.activeTodo.title}</b>
     </p>
   ) : (
     <p className="text-lg text-slate-300">
-      {todoHook.todos.length > 0
+      {todo.todos.length > 0
         ? "You didn't select any tasks 🥱"
         : "You don't have any tasks 😭"}
     </p>
   );
 
-  const TodoList = todoHook.todos.map((todo, index) => (
+  const TodoList = todo.todos.map((item, index) => (
     <Todo
       key={index}
-      todo={todo}
-      isActive={todo.id === todoHook.activeTodoId}
-      handlers={todoHook.handlers}
+      todo={item}
+      isActive={item.id === todo.activeTodoId}
+      handlers={todo.handlers}
     />
   ));
 

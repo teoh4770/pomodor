@@ -1,6 +1,32 @@
 import { useContext } from "react";
 import { AppContext } from "./AppProvider";
 
-const useAppContext = () => useContext(AppContext);
+function useTodoContext() {
+  const { todo } = useContext(AppContext);
 
-export { useAppContext };
+  if (todo === undefined) {
+    throw new Error("useTodoContext must be used within an AppContext");
+  }
+
+  return todo;
+}
+function useSessionContext() {
+  const { session } = useContext(AppContext);
+
+  if (session === undefined) {
+    throw new Error("useSessionContext must be used within an AppContext");
+  }
+
+  return session;
+}
+function useTimerContext() {
+  const { timer } = useContext(AppContext);
+
+  if (timer === undefined) {
+    throw new Error("useTimerContext must be used with an AppContext");
+  }
+
+  return timer;
+}
+
+export { useTodoContext, useSessionContext, useTimerContext };
