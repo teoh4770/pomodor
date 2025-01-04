@@ -63,6 +63,71 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
     </div>
   );
 
+  // Todo: making it a non-controlled form
+  const TodoForm = (
+    <form
+      className="grid gap-4 rounded-lg border bg-white text-slate-700"
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget as HTMLFormElement);
+        const todoFormdata = {
+          title: formData.get("title") as string,
+          description: formData.get("description") as string,
+          targetSessions: parseInt(
+            formData.get("targetSessions") as string,
+          ) as number,
+        };
+        handlers.handleEdit(todo.id, todoFormdata);
+      }}
+    >
+      <div>
+        <label className="sr-only" htmlFor={"title-" + todo.id}>
+          Title
+        </label>
+        <input
+          type="text"
+          id={"title-" + todo.id}
+          className="w-full bg-transparent text-xl font-bold placeholder:italic"
+          name="title"
+          defaultValue={todo.title}
+        />
+      </div>
+
+      <div>
+        <label htmlFor={"targetSessions-" + todo.id}>Target Sessions</label>
+        <input
+          type="number"
+          id={"targetSessions-" + todo.id}
+          className="block border border-black"
+          name="targetSessions"
+          defaultValue={todo.targetSessions}
+        />
+      </div>
+
+      <div>
+        <label className="sr-only" htmlFor={"description-" + todo.id}>
+          Description
+        </label>
+        <textarea
+          id={"description-" + todo.id}
+          className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm font-light"
+          name="description"
+          placeholder="Some notes..."
+          defaultValue={todo.description}
+        />
+      </div>
+
+      <button
+        className="bg-black font-bold text-white"
+        type="submit"
+        aria-label="Save button"
+      >
+        Save
+      </button>
+    </form>
+  );
+
   const todoStyle = clsx(
     "cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3 -outline-offset-4 hover:outline hover:outline-4",
     {
@@ -90,6 +155,11 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
 
       {/* contain description */}
       {Description}
+
+      {/* todo: temporarily, will be removed */}
+      <div className="p-1"></div>
+
+      {TodoForm}
     </li>
   );
 };
