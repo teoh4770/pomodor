@@ -25,6 +25,22 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
     },
   );
 
+  if (isEditMode) {
+    return (
+      <div className="rounded-lg bg-white">
+        <TodoForm
+          todo={todo}
+          onSubmit={(formData) => handlers.handleEdit(todo.id, formData)}
+          onCancel={() => setIsEditMode(false)}
+          onDelete={() => {
+            handlers.handleRemove(todo.id);
+            setIsEditMode(false);
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <li
       className={todoStyle}
@@ -54,21 +70,6 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
 
       {/* contain description */}
       <Description id={todo.id} description={todo.description} />
-
-      {/* todo: temporarily, will be removed */}
-      <div className="p-1"></div>
-
-      {isEditMode && (
-        <TodoForm
-          todo={todo}
-          onSubmit={(formData) => handlers.handleEdit(todo.id, formData)}
-          onCancel={() => setIsEditMode(false)}
-          onDelete={() => {
-            handlers.handleRemove(todo.id);
-            setIsEditMode(false);
-          }}
-        />
-      )}
     </li>
   );
 };

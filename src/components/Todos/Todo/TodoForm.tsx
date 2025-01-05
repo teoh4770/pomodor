@@ -26,47 +26,50 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
 
   return (
     <form
-      className="grid gap-4 rounded-lg border bg-white text-slate-700"
+      className="overflow-hidden rounded-lg bg-white text-slate-700"
       onSubmit={handleSubmit}
     >
-      <div>
-        <label className="sr-only" htmlFor={"title-" + todo.id}>
-          Title
-        </label>
-        <input
-          type="text"
-          id={"title-" + todo.id}
-          className="w-full bg-transparent text-xl font-bold placeholder:italic"
-          name="title"
-          defaultValue={todo.title}
-        />
+      {/* form inputs container */}
+      <div className="grid gap-4 px-5 py-7" aria-label="Form inputs">
+        <div>
+          <label className="sr-only" htmlFor={"title-" + todo.id}>
+            Title
+          </label>
+          <input
+            type="text"
+            id={"title-" + todo.id}
+            className="w-full bg-transparent text-xl font-bold placeholder:italic"
+            name="title"
+            defaultValue={todo.title}
+            autoFocus
+          />
+        </div>
+        <div>
+          <label htmlFor={"targetSessions-" + todo.id}>Target Sessions</label>
+          <input
+            type="number"
+            id={"targetSessions-" + todo.id}
+            className="block border border-black"
+            name="targetSessions"
+            defaultValue={todo.targetSessions}
+          />
+        </div>
+        <div>
+          <label className="sr-only" htmlFor={"description-" + todo.id}>
+            Description
+          </label>
+          <textarea
+            id={"description-" + todo.id}
+            className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm font-light"
+            name="description"
+            placeholder="Some notes..."
+            defaultValue={todo.description}
+          />
+        </div>
       </div>
 
-      <div>
-        <label htmlFor={"targetSessions-" + todo.id}>Target Sessions</label>
-        <input
-          type="number"
-          id={"targetSessions-" + todo.id}
-          className="block border border-black"
-          name="targetSessions"
-          defaultValue={todo.targetSessions}
-        />
-      </div>
-
-      <div>
-        <label className="sr-only" htmlFor={"description-" + todo.id}>
-          Description
-        </label>
-        <textarea
-          id={"description-" + todo.id}
-          className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm font-light"
-          name="description"
-          placeholder="Some notes..."
-          defaultValue={todo.description}
-        />
-      </div>
-
-      <div className="flex">
+      {/* footer buttons container */}
+      <footer className="flex bg-slate-200 px-5 py-3" aria-label="Form buttons">
         <button
           type="button"
           className="button mr-auto font-bold !uppercase tracking-wide active:translate-y-[0.125rem] active:!bg-transparent"
@@ -98,7 +101,7 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
         >
           Save
         </button>
-      </div>
+      </footer>
     </form>
   );
 };
