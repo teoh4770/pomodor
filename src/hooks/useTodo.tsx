@@ -139,13 +139,13 @@ const useTodo = (): TodoHook => {
   /******************/
   // Update todos in localstorage
   useEffect(() => {
-    console.log("Update todos in localstorage.")
+    console.log("Update todos in localstorage.");
     console.dir(todos);
   }, [todos]);
 
   // Update activeTodoId in localstorage
   useEffect(() => {
-    console.log("Update activeTodoId.")
+    console.log("Update activeTodoId.");
     console.dir(activeTodoId);
   }, [activeTodoId]);
 

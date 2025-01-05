@@ -7,6 +7,7 @@ interface TodoFormProps {
     title: string;
     description: string;
     targetSessions: number;
+    completedSessions: number;
   }) => void;
   onCancel: () => void;
   onDelete: () => void;
@@ -21,10 +22,18 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget as HTMLFormElement);
+
+    // validate form data
+    // - target sessions and completed session cannot accept negative value
+    // - title is mandatory
+    // - description is optional
+    // - targetSessions must be larger than completed sessions
+
     const todoFormdata = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
-      targetSessions: parseInt(formData.get("targetSessions") as string, 10),
+      targetSessions: parseInt(formData.get("targetSessions") as string),
+      completedSessions: parseInt(formData.get("completedSessions") as string),
     };
     onSubmit(todoFormdata);
   };
@@ -47,6 +56,18 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
             name="title"
             defaultValue={todo.title}
             autoFocus
+          />
+        </div>
+        <div>
+          <label htmlFor={"completedSessions-" + todo.id}>
+            Completed Sessions
+          </label>
+          <input
+            type="number"
+            id={"completedSessions-" + todo.id}
+            className="block border border-black"
+            name="completedSessions"
+            defaultValue={todo.completedSessions}
           />
         </div>
         <div>
@@ -76,7 +97,7 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
         ) : (
           <a
             href="#"
-            className="underline text-sm text-slate-500"
+            className="text-sm text-slate-500 underline"
             onClick={(e) => {
               e.preventDefault();
               setShowNoteComponent(true);
