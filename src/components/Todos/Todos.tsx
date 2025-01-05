@@ -1,5 +1,5 @@
 import { useTodoContext } from "../../context";
-import { Todo } from "./Todo";
+import { Todo } from "./Todo/Todo";
 
 const Todos = () => {
   const todo = useTodoContext();
