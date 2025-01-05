@@ -51,14 +51,14 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
     >
       {/* contains checkbox, session and edit button */}
       <div className="flex items-center justify-between">
-        <div className="form-control">
-          <Checkbox
-            id={todo.id}
-            title={todo.title}
-            completed={todo.completed}
-            onToggle={() => handlers.handleToggle(todo.id)}
-          />
-        </div>
+        <Checkbox
+          id={todo.id}
+          title={todo.title}
+          completed={todo.completed}
+          onToggle={() => {
+            handlers.handleToggle(todo.id);
+          }}
+        />
         <div className="flex items-center gap-4">
           <Session
             completedSessions={todo.completedSessions}

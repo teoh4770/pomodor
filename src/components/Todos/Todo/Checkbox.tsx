@@ -6,18 +6,22 @@ interface CheckboxProps {
 }
 
 const Checkbox = ({ id, title, completed, onToggle }: CheckboxProps) => (
-  <>
+  <label
+    className="form-control"
+    htmlFor={"todo-" + id}
+    onClick={(e) => e.stopPropagation()}
+  >
     <input
       type="checkbox"
       id={"todo-" + id}
       className="checkbox peer"
       checked={completed}
-      onChange={onToggle}
+      onChange={() => {
+        onToggle();
+      }}
     />
-    <label htmlFor={"todo-" + id} className="peer-checked:line-through">
-      {title}
-    </label>
-  </>
+    <span className="peer-checked:line-through">{title}</span>
+  </label>
 );
 
 export { Checkbox };
