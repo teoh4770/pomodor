@@ -118,13 +118,28 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
         />
       </div>
 
-      <button
-        className="bg-black font-bold text-white"
-        type="submit"
-        aria-label="Save button"
-      >
-        Save
-      </button>
+      <div>
+        <button
+          type="button"
+          className="button font-bold !uppercase tracking-wide active:translate-y-[0.125rem] active:!bg-transparent"
+          data-type="naked"
+          data-size="sm"
+          aria-label="Delete button"
+          onClick={() => handlers.handleRemove(todo.id)}
+        >
+          Delete
+        </button>
+
+        <button
+          type="submit"
+          className="button font-bold !uppercase tracking-wide"
+          data-type="confirm"
+          data-size="sm"
+          aria-label="Save button"
+        >
+          Save
+        </button>
+      </div>
     </form>
   );
 

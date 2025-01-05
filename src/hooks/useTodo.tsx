@@ -105,6 +105,7 @@ const useTodo = (): TodoHook => {
 
   function handleRemove(id: string) {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
+
     setTodos(updatedTodos);
   }
 
@@ -138,11 +139,13 @@ const useTodo = (): TodoHook => {
   /******************/
   // Update todos in localstorage
   useEffect(() => {
+    console.log("Update todos in localstorage.")
     console.dir(todos);
   }, [todos]);
 
   // Update activeTodoId in localstorage
   useEffect(() => {
+    console.log("Update activeTodoId.")
     console.dir(activeTodoId);
   }, [activeTodoId]);
 
