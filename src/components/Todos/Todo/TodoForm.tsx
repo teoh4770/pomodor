@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ITodo } from "../../../types";
 
 interface TodoFormProps {
@@ -12,6 +13,10 @@ interface TodoFormProps {
 }
 
 const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
+  const [showNoteComponent, setShowNoteComponent] = useState(
+    todo.description.length > 0,
+  );
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,18 +59,32 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
             defaultValue={todo.targetSessions}
           />
         </div>
-        <div>
-          <label className="sr-only" htmlFor={"description-" + todo.id}>
-            Description
-          </label>
-          <textarea
-            id={"description-" + todo.id}
-            className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm font-light"
-            name="description"
-            placeholder="Some notes..."
-            defaultValue={todo.description}
-          />
-        </div>
+        {/* write here */}
+        {showNoteComponent ? (
+          <div>
+            <label className="sr-only" htmlFor={"description-" + todo.id}>
+              Description
+            </label>
+            <textarea
+              id={"description-" + todo.id}
+              className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm font-light"
+              name="description"
+              placeholder="Some notes..."
+              defaultValue={todo.description}
+            />
+          </div>
+        ) : (
+          <a
+            href="#"
+            className="underline text-sm text-slate-500"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowNoteComponent(true);
+            }}
+          >
+            + Add Note
+          </a>
+        )}
       </div>
 
       {/* footer buttons container */}

@@ -25,16 +25,23 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
     },
   );
 
+  function hideEditForm() {
+    setIsEditMode(false);
+  }
+
   if (isEditMode) {
     return (
       <div className="rounded-lg bg-white">
         <TodoForm
           todo={todo}
-          onSubmit={(formData) => handlers.handleEdit(todo.id, formData)}
-          onCancel={() => setIsEditMode(false)}
+          onSubmit={(formData) => {
+            handlers.handleEdit(todo.id, formData);
+            hideEditForm();
+          }}
+          onCancel={() => hideEditForm()}
           onDelete={() => {
             handlers.handleRemove(todo.id);
-            setIsEditMode(false);
+            hideEditForm();
           }}
         />
       </div>
