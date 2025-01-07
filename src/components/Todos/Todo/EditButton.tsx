@@ -10,7 +10,10 @@ const EditButton = ({ onToggleEditView }: EditButtonProps) => (
     data-size="sm"
     title="Click to edit this task"
     aria-label="Edit todo button"
-    onClick={onToggleEditView}
+    onClick={(e) => {
+      e.stopPropagation();
+      onToggleEditView();
+    }}
   >
     Edit
   </button>
