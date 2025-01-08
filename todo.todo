@@ -1,19 +1,27 @@
 Basic Pomodoro Timer Checklist:
-  - [ ] Create timer
-  - [ ] Stop timer
-  - [ ] Reset timer
-  - [ ] Update focus/break time
-  - [ ] Notify timer's up
-  - [ ] Have Deep Work Mode and Break Time mode
-  - [ ] Create todo list
-  - [ ] Select a todo to work on
-  - [ ] See the current todo that you work on
-  - [ ] Celebrate banner when all the todos are complete
-  - [ ] Edit single todo
-  - [ ] Remove single todo
-  - [ ] Complete single todo
+  - [X] Create timer
+  - [X] Stop timer
+  - [X] Reset timer
+  - [X] Change reset timer to skip (Next timer mode)
+  - [X] Notify timer's up by sound, title, notification and ?
+  - [X] Have Deep Work Mode and Break Time mode
+  - [X] Keep track of pomodoro amount
+  - [X] Create todo list
+  - [X] Style a todo (normal view)
+  - [X] Refactor todo list
+  - [X] Select a todo to work on
+  - [X] See the current todo that you work on
+  - [X] Style the activeTodoMessage
+  - [X] Increment active task every once pomodoro session
+  - [X] Edit single todo
+  - [X] Remove single todo with delete button
+  - [X] Cancel button in edit view 
+  - [X] Improve Edit View 
+  - [X] Complete single todo
+  - [X] Add note to a single todo
+  - [ ] Handle todo edit form validation to ensure that the fields are valid.
   - [ ] Set priority of todo
-  - [ ] Add note to a single todo
+  - [ ] Celebrate banner when all the todos are complete
   - [ ] Remove all todos
   - [ ] Remove all completed todos
   - [ ] Reset all todos' completed status and Pomodoro sessions
@@ -23,6 +31,7 @@ Basic Pomodoro Timer Checklist:
       - [ ] Alarm sounds
       - [ ] Color themes
       - [ ] Background sounds
+      - [ ] Update focus/break time
   - [ ] Save user data (todos, settings, Pomodoro sessions)
       - [ ] Save user data in the database
       - [ ] Retrieve user data on login
@@ -41,15 +50,14 @@ Advanced Pomodoro Timer Checklist:
   - [ ] Create shortcuts
 
 User Stories:
-  - [ ] As a user, I want to start a timer so that I can focus for a fixed period.
-  - [ ] As a user, I want to stop a timer so that I can pause work if needed.
-  - [ ] As a user, I want to reset the timer so that I can restart a session if interrupted.
+  - [X] As a user, I want to start a timer so that I can focus for a fixed period.
+  - [X] As a user, I want to stop a timer so that I can pause work if needed.
   - [ ] As a user, I want to update the focus and break time so that the timer fits my schedule.
-  - [ ] As a user, I want to switch between Deep Work Mode and Break Time mode so that I can focus or relax appropriately.
-  - [ ] As a user, I want a notification when the timer ends so that I know when to switch tasks.
+  - [X] As a user, I want to switch between Deep Work Mode and Break Time mode so that I can focus or relax appropriately.
+  - [X] As a user, I want a notification when the timer ends so that I know when to switch tasks.
   - [ ] As a user, I want to create todos so that I can track my tasks.
   - [ ] As a user, I want to select a todo to work on so that I can focus on one task at a time.
-  - [ ] As a user, I want to see the current todo I’m working on so that I stay organized.
+  - [X] As a user, I want to see the current todo I’m working on so that I stay organized.
   - [ ] As a user, I want to edit a single todo so that I can update task details.
   - [ ] As a user, I want to remove a single todo so that I can declutter my list.
   - [ ] As a user, I want to mark a todo as completed so that I can track progress.

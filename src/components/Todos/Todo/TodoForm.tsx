@@ -1,34 +1,36 @@
 import { useState } from "react";
 import { ITodo } from "../../../types";
 import { toast } from "react-toastify";
+import { validateTitle } from "../../../utils/validations/CompletedSessionsValidation";
+import { validateTargetSessions } from "../../../utils/validations/TargetSessionsValidation";
+import { validateCompletedSessions } from "../../../utils/validations/TitleValidation";
+
+// Type definitions
+type TodoFormData = {
+  title: string;
+  description: string;
+  targetSessions: number;
+  completedSessions: number;
+}
 
 interface TodoFormProps {
   todo: ITodo;
-  onSubmit: (formData: {
-    title: string;
-    description: string;
-    targetSessions: number;
-    completedSessions: number;
-  }) => void;
+  onSubmit: (formData: TodoFormData) => void;
   onCancel: () => void;
   onDelete: () => void;
 }
 
-type TodoFormLabel =
-  | "title"
-  | "description"
-  | "targetSessions"
-  | "completedSessions";
+type ValidationErrors = Record<string, string[]>;
+
+const validateForm = (data: TodoFormData): ValidationErrors => {
+  return {
+    title: validateTitle(data.title),
+    targetSessions: validateTargetSessions(data.targetSessions),
+    completedSessions: validateCompletedSessions(data.completedSessions, data.targetSessions)
+  }
+}
 
 const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
-  // Constant
-  const defaultErrors = {
-    title: [],
-    description: [],
-    targetSessions: [],
-    completedSessions: [],
-  };
-
   // States
   const [showNoteComponent, setShowNoteComponent] = useState(
     todo.description.length > 0,
@@ -38,74 +40,26 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget as HTMLFormElement);
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const targetSessions = parseInt(formData.get("targetSessions") as string);
-    const completedSessions = parseInt(
-      formData.get("completedSessions") as string,
-    );
+    const todoFormData: TodoFormData = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      targetSessions: parseInt(formData.get("targetSessions") as string),
+      completedSessions: parseInt(formData.get("completedSessions") as string),
+    };
 
-    let formErrors: Record<TodoFormLabel, string[]> = defaultErrors;
-
-    // validate title
-    if (title.length === 0) {
-      formErrors = {
-        ...formErrors,
-        title: [...formErrors.title, "Cannot be empty"],
-      };
-    }
-
-    // validate target sessions property
-    if (targetSessions <= 0) {
-      formErrors = {
-        ...formErrors,
-        targetSessions: [
-          ...formErrors.targetSessions,
-          "Cannot accept negative value",
-        ],
-      };
-    }
-
-    // validate complete sessions property
-    if (completedSessions <= 0) {
-      formErrors = {
-        ...formErrors,
-        completedSessions: [
-          ...formErrors.completedSessions,
-          "Cannot accept negative value",
-        ],
-      };
-    }
-
-    if (completedSessions >= targetSessions) {
-      formErrors = {
-        ...formErrors,
-        completedSessions: [
-          ...formErrors.completedSessions,
-          "Cannot larger than or equal to target sessions",
-        ],
-      };
-    }
-
-    const hasErrors = Object.values(formErrors).some(
+    const validationErrors = validateForm(todoFormData);
+    
+    const hasErrors = Object.values(validationErrors).some(
       (error) => error.length > 0,
     );
 
     if (hasErrors) {
-      // handle errors here
       toast.error("You have invalid entry, try again!");
-      console.error(formErrors);
+      console.error(validationErrors);
       return;
     }
 
-    // If no error, then pass the correct todo form data to the submit listener
-    const todoFormdata = {
-      title,
-      description,
-      targetSessions,
-      completedSessions,
-    };
-    onSubmit(todoFormdata);
+    onSubmit(todoFormData);
   };
 
   return (
@@ -129,6 +83,7 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
             autoFocus
           />
         </div>
+
         <div>
           <label htmlFor={"completedSessions-" + todo.id}>
             Completed Sessions
@@ -141,6 +96,7 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
             defaultValue={todo.completedSessions}
           />
         </div>
+
         <div>
           <label htmlFor={"targetSessions-" + todo.id}>Target Sessions</label>
           <input
@@ -151,7 +107,7 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
             defaultValue={todo.targetSessions}
           />
         </div>
-        {/* write here */}
+
         {showNoteComponent ? (
           <div>
             <label className="sr-only" htmlFor={"description-" + todo.id}>

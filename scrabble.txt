@@ -1,0 +1,23 @@
+Challenges of Moving Todos to App
+1. Shared Hooks:
+The useTodo and useTimer hooks are currently initialized in the Timer component. Moving them to App could cause unnecessary re-renders unless handled carefully.
+
+2. Rerender Performance:
+Passing hooks as props from App down to Todos and Timer can trigger re-renders if the parent (App) updates.
+
+Refactor Plan
+1. Use Context for State Sharing
+Instead of passing hooks as props, leverage React Context to manage session, timer, and todo globally without causing excessive re-renders.
+
+2. Split Timer and Todos into Independent Components
+Move Todos to App, and use context to manage the shared logic between Timer and Todos.
+
+
+Toggle edit view
+Click on edit button to show the edit view
+Click on cancel button to hide the edit view
+
+
+
+
+
