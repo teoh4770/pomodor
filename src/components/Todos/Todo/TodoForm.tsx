@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ITodo } from "../../../types";
+import { toast } from "react-toastify";
 
 interface TodoFormProps {
   todo: ITodo;
@@ -13,7 +14,22 @@ interface TodoFormProps {
   onDelete: () => void;
 }
 
+type TodoFormLabel =
+  | "title"
+  | "description"
+  | "targetSessions"
+  | "completedSessions";
+
 const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
+  // Constant
+  const defaultErrors = {
+    title: [],
+    description: [],
+    targetSessions: [],
+    completedSessions: [],
+  };
+
+  // States
   const [showNoteComponent, setShowNoteComponent] = useState(
     todo.description.length > 0,
   );
@@ -22,18 +38,72 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const targetSessions = parseInt(formData.get("targetSessions") as string);
+    const completedSessions = parseInt(
+      formData.get("completedSessions") as string,
+    );
 
-    // validate form data
-    // - target sessions and completed session cannot accept negative value
-    // - title is mandatory
-    // - description is optional
-    // - targetSessions must be larger than completed sessions
+    let formErrors: Record<TodoFormLabel, string[]> = defaultErrors;
 
+    // validate title
+    if (title.length === 0) {
+      formErrors = {
+        ...formErrors,
+        title: [...formErrors.title, "Cannot be empty"],
+      };
+    }
+
+    // validate target sessions property
+    if (targetSessions <= 0) {
+      formErrors = {
+        ...formErrors,
+        targetSessions: [
+          ...formErrors.targetSessions,
+          "Cannot accept negative value",
+        ],
+      };
+    }
+
+    // validate complete sessions property
+    if (completedSessions <= 0) {
+      formErrors = {
+        ...formErrors,
+        completedSessions: [
+          ...formErrors.completedSessions,
+          "Cannot accept negative value",
+        ],
+      };
+    }
+
+    if (completedSessions >= targetSessions) {
+      formErrors = {
+        ...formErrors,
+        completedSessions: [
+          ...formErrors.completedSessions,
+          "Cannot larger than or equal to target sessions",
+        ],
+      };
+    }
+
+    const hasErrors = Object.values(formErrors).some(
+      (error) => error.length > 0,
+    );
+
+    if (hasErrors) {
+      // handle errors here
+      toast.error("You have invalid entry, try again!");
+      console.error(formErrors);
+      return;
+    }
+
+    // If no error, then pass the correct todo form data to the submit listener
     const todoFormdata = {
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      targetSessions: parseInt(formData.get("targetSessions") as string),
-      completedSessions: parseInt(formData.get("completedSessions") as string),
+      title,
+      description,
+      targetSessions,
+      completedSessions,
     };
     onSubmit(todoFormdata);
   };
@@ -52,9 +122,10 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
           <input
             type="text"
             id={"title-" + todo.id}
-            className="w-full bg-transparent text-xl font-bold placeholder:italic"
+            className="offset-1 w-full -translate-x-0.5 rounded-lg border-2 border-transparent bg-transparent p-0.5 text-xl font-bold placeholder:italic hover:border-slate-300 focus:border-transparent focus:outline-slate-400"
             name="title"
             defaultValue={todo.title}
+            placeholder="What are you working on?"
             autoFocus
           />
         </div>
@@ -88,7 +159,7 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: TodoFormProps) => {
             </label>
             <textarea
               id={"description-" + todo.id}
-              className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm font-light"
+              className="w-full resize-none rounded-lg bg-[#efefef] p-3 text-sm placeholder:text-gray-300"
               name="description"
               placeholder="Some notes..."
               defaultValue={todo.description}
