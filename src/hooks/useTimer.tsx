@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
-import { TimerModeEnum } from "../types";
-import { formatTime, playSound } from "../utils";
-import { toast } from "react-toastify";
+import { TimerModeEnum } from "@/types";
+import { formatTime, playSound } from "@/utils";
+import { toast } from "react-toastify"; // ! <- this one need to create its own component that use this 
 
 export interface TimerHook {
   mode: TimerModeEnum;
@@ -15,13 +15,13 @@ export interface TimerHook {
   handleBreakMode: () => void;
 }
 
-const useTimer = (onTimerEnd?: () => void): TimerHook => {
-  // Constants
-  const timerMode = {
-    [TimerModeEnum.pomodoro]: 2,
-    [TimerModeEnum.break]: 1,
-  };
+// Constants
+const timerMode = {
+  [TimerModeEnum.pomodoro]: 2,
+  [TimerModeEnum.break]: 1,
+};
 
+const useTimer = (onTimerEnd?: () => void): TimerHook => {
   // States
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);

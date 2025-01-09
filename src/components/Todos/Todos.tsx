@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { useTodoContext } from "../../context";
-import { Todo } from "./Todo/Todo";
-import { TodoForm } from "./TodoForm";
-import { ActiveTodoMessage } from "./ActiveTodoMessage";
-import { TodoList } from "./TodoList";
-import { AddTodoButton } from "./AddTodoButton";
+import { useTodoContext } from "@/context";
+import { TodoForm } from "@/components/Todos/TodoForm";
+import { ActiveTodoMessage, TodoList, AddTodoButton } from "@/components/Todos";
 
 const Todos = () => {
   const todoContext = useTodoContext();
@@ -20,7 +17,7 @@ const Todos = () => {
 
       {/* Header */}
       <header className="mb-4 flex justify-between border-b-2 py-4">
-        <h2 className="text-lg font-bold text-white">Tasks</h2>;
+        <h2 className="text-lg font-bold text-white">Tasks</h2>
       </header>
 
       {/* Action Buttons for todos */}

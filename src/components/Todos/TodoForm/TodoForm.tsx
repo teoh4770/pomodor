@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { AddTodoFormProps } from "./TodoForm.types";
-import { extractFormData } from "./TodoForm.utils";
+import { AddTodoFormProps } from "@/components/Todos/TodoForm/TodoForm.types";
+import { extractFormData } from "@/components/Todos/TodoForm/TodoForm.utils";
 import {
   handleValidationErrors,
   hasValidationErrors,
   validateForm,
-} from "./TodoFormValidation";
+} from "@/components/Todos/TodoForm/TodoFormValidation";
 
 const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: AddTodoFormProps) => {
-  const [showNoteComponent, setShowNoteComponent] = useState(false);
+  const [showNoteComponent, setShowNoteComponent] = useState(
+    todo ? todo.description.length > 0 : false,
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +52,9 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: AddTodoFormProps) => {
 
         {todo && onDelete && (
           <div>
-            <label htmlFor={"completedSessions-" + todo?.id}>Completed Sessions</label>
+            <label htmlFor={"completedSessions-" + todo?.id}>
+              Completed Sessions
+            </label>
             <input
               type="number"
               id={"completedSessions-" + todo?.id}
@@ -101,8 +105,8 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: AddTodoFormProps) => {
 
       {/* footer buttons container */}
       <footer className="flex bg-slate-200 px-5 py-3" aria-label="Form buttons">
-        {todo && onDelete && (
-          <div className="mr-auto">
+        <div className="mr-auto">
+          {todo && onDelete && (
             <button
               type="button"
               className="button font-bold !uppercase tracking-wide active:translate-y-[0.125rem] active:!bg-transparent"
@@ -113,8 +117,8 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: AddTodoFormProps) => {
             >
               Delete
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
         <button
           type="button"

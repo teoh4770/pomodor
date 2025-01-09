@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { useTimer, useSession, useTodo } from "../hooks";
-import { SessionHook } from "../hooks/useSession";
-import { TimerHook } from "../hooks/useTimer";
-import { TodoHook } from "../hooks/useTodo";
-import { TimerModeEnum } from "../types";
+import { useTimer, useSession, useTodo } from "@/hooks";
+import { SessionHook } from "@/hooks/useSession";
+import { TimerHook } from "@/hooks/useTimer";
+import { TodoHook } from "@/hooks/useTodo";
+import { TimerModeEnum } from "@/types";
 
 interface IAppContext {
   timer: TimerHook | undefined;

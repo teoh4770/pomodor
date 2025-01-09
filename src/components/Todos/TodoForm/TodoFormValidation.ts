@@ -1,6 +1,9 @@
 import { toast } from "react-toastify";
-import { Validation } from "../../../utils/Validation";
-import { TodoFormData, ValidationErrors } from "./TodoForm.types";
+import { Validation } from "@/utils/Validation";
+import {
+  TodoFormData,
+  ValidationErrors,
+} from "@/components/Todos/TodoForm/TodoForm.types";
 
 const validateTitle = (value: string): string[] => {
   const errors: string[] = [];
@@ -33,7 +36,9 @@ const validateForm = (data: TodoFormData) => {
   return {
     title: validateTitle(data.title),
     targetSessions: validateTargetSessions(data.targetSessions),
-    completedSessions: data.completedSessions ? validateCompletedSessions(data.completedSessions, data.targetSessions): [],
+    completedSessions: data.completedSessions
+      ? validateCompletedSessions(data.completedSessions, data.targetSessions)
+      : [],
   };
 };
 

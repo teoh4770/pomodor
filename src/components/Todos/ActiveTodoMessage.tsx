@@ -1,4 +1,4 @@
-import { ITodo } from "../../types";
+import { ITodo } from "@/types";
 
 interface ActiveTodoMessageProps {
   activeTodo: ITodo | null;

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AppContext } from "./AppProvider";
+import { AppContext } from "@/context";
 
 function useTodoContext() {
   const { todo } = useContext(AppContext);

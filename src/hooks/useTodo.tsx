@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ITodo, ITodoForm, ITodoHandlers } from "../types/types";
+import { ITodo, ITodoForm, ITodoHandlers } from "@/types";
 
 export interface TodoHook {
   todos: ITodo[];
@@ -10,10 +10,7 @@ export interface TodoHook {
 }
 
 const useTodo = (): TodoHook => {
-  // Constants
-
   // States
-  // todo: remove the temporary todo list
   const [todos, setTodos] = useState<ITodo[]>([
     {
       id: "1",

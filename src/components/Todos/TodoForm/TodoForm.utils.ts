@@ -1,4 +1,4 @@
-import { TodoFormData } from "./TodoForm.types";
+import { TodoFormData } from "@/components/Todos/TodoForm/TodoForm.types";
 
 const extractFormData = (form: HTMLFormElement): TodoFormData => {
   const formData = new FormData(form);

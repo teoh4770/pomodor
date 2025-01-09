@@ -1,7 +1,7 @@
-import { Time } from "./Time";
-import { Controls } from "./Controls";
-import { Modes } from "./Modes";
-import { useSessionContext, useTimerContext } from "../../context";
+import { Time } from "@/components/Timer/Time";
+import { Controls } from "@/components/Timer/Controls";
+import { Modes } from "@/components/Timer/Modes";
+import { useSessionContext, useTimerContext } from "@/context";
 
 const Timer = () => {
   const timer = useTimerContext();

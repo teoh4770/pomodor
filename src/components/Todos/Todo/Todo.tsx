@@ -1,12 +1,14 @@
 import clsx from "clsx";
 
-import { ITodo, ITodoHandlers } from "../../../types";
+import { ITodo, ITodoHandlers } from "@/types";
 import { useState } from "react";
-import { TodoForm } from "../TodoForm";
-import { Checkbox } from "./Checkbox";
-import { Description } from "./Description";
-import { EditButton } from "./EditButton";
-import { Session } from "./Session";
+import { TodoForm } from "@/components/Todos/TodoForm";
+import {
+  Checkbox,
+  Description,
+  EditButton,
+  Session,
+} from "@/components/Todos/Todo";
 
 interface TodoProp {
   todo: ITodo;

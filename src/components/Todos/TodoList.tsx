@@ -1,5 +1,5 @@
-import { ITodo, ITodoHandlers } from "../../types";
-import { Todo } from "./Todo/Todo";
+import { ITodo, ITodoHandlers } from "@/types";
+import { Todo } from "@/components/Todos/Todo";
 
 interface TodoListProps {
   todos: ITodo[]
