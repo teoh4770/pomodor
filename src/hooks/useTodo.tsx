@@ -40,24 +40,7 @@ const useTodo = (): TodoHook => {
       completed: false,
       targetSessions: 3,
       completedSessions: 1,
-    },
-    {
-      id: "4",
-      title: "Learn TypeScript",
-      description:
-        "Follow the TypeScript tutorial and practice by converting JavaScript code.",
-      completed: false,
-      targetSessions: 8,
-      completedSessions: 4,
-    },
-    {
-      id: "5",
-      title: "Read 'Clean Code'",
-      description: "Read 3 chapters of 'Clean Code' by Robert C. Martin.",
-      completed: false,
-      targetSessions: 6,
-      completedSessions: 2,
-    },
+    }
   ]);
 
   const [activeTodoId, setActiveTodoId] = useState("");

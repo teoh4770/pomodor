@@ -9,6 +9,10 @@ class Validation {
     return value > 0;
   }
 
+  static negativeNumber(value: number) {
+    return value < 0;
+  }
+
   static lessThan(value: number, compareTo: number) {
     return value < compareTo;
   }
