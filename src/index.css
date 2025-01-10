@@ -94,6 +94,12 @@ body {
     &:active {
       transform: translateY(0.125rem);
     }
+
+    &[data-active="true"] {
+      background-color: rgba(0 0 0 / 0.2);
+      font-weight: bold;
+      opacity: 1;
+    }
   }
 
   &[data-type="naked"] {

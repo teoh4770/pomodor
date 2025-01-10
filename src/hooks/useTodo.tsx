@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
-import { ITodo, ITodoForm, ITodoHandlers } from "@/types";
+import {
+  ITodo,
+  ITodoForm,
+  ITodoHandlers,
+  ITodosHandlers,
+  TodosViewTypeEnum,
+} from "@/types";
 
 export interface TodoHook {
   todos: ITodo[];
-  activeTodo: ITodo | null;
-  activeTodoId: string;
+  visibleTodos: ITodo[];
+  selectedTodo: ITodo | null;
+  selectedTodoId: string;
   incrementSession: () => void;
-  handlers: ITodoHandlers;
+  currentViewType: TodosViewTypeEnum;
+  todoHandlers: ITodoHandlers;
+  todosHandlers: ITodosHandlers;
 }
 
 const useTodo = (): TodoHook => {
@@ -37,22 +46,32 @@ const useTodo = (): TodoHook => {
       completed: false,
       targetSessions: 3,
       completedSessions: 1,
-    }
+    },
   ]);
 
-  const [activeTodoId, setActiveTodoId] = useState("");
+  const [selectedTodoId, setSelectedTodoId] = useState("");
+
+  const [currentViewType, setCurrentViewType] = useState<TodosViewTypeEnum>(
+    TodosViewTypeEnum.all,
+  );
 
   // Derived variables
-  const activeTodo = todos.find((todo) => todo.id === activeTodoId) || null;
+  const selectedTodo = todos.find((todo) => todo.id === selectedTodoId) || null;
+  const todosViews: Record<TodosViewTypeEnum, ITodo[]> = {
+    [TodosViewTypeEnum.all]: todos,
+    [TodosViewTypeEnum.completed]: todos.filter(todo => todo.completed),
+    [TodosViewTypeEnum.active]: todos.filter(todo => !todo.completed),
+  }
+  const visibleTodos = todosViews[currentViewType];
 
   /******************/
   /* Todos Handlers */
   /******************/
-  function handleActive(todoId: string) {
-    setActiveTodoId(todoId);
+  function selectTodo(todoId: string) {
+    setSelectedTodoId(todoId);
   }
 
-  function handleAdd(formData: ITodoForm) {
+  function addTodo(formData: ITodoForm) {
     const newTodoId = self.crypto.randomUUID();
     const newTodos: ITodo[] = [
       ...todos,
@@ -67,10 +86,10 @@ const useTodo = (): TodoHook => {
     ];
 
     setTodos(newTodos);
-    setActiveTodoId(newTodoId);
+    setSelectedTodoId(newTodoId);
   }
 
-  function handleEdit(id: string, formData: ITodoForm) {
+  function editTodo(id: string, formData: ITodoForm) {
     const updatedTodos = todos.map((todo) => {
       if (todo.id !== id) return todo;
 
@@ -83,13 +102,13 @@ const useTodo = (): TodoHook => {
     setTodos(updatedTodos);
   }
 
-  function handleRemove(id: string) {
+  function removeTodo(id: string) {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
 
     setTodos(updatedTodos);
   }
 
-  function handleToggle(id: string) {
+  function toggleTodoCompletion(id: string) {
     const updatedTodos = todos.map((todo) => {
       if (todo.id !== id) return todo;
 
@@ -103,9 +122,33 @@ const useTodo = (): TodoHook => {
     // todo: select next incomplete todo
   }
 
+  function changeViewType(viewType: TodosViewTypeEnum) {
+    setCurrentViewType(viewType);
+  }
+
+  function resetTodos() {
+    const resetTodos = todos.map((todo) => {
+      todo.completed = false;
+      todo.completedSessions = 0;
+
+      return todo;
+    });
+
+    setTodos(resetTodos);
+  }
+
+  function clearAllTodos() {
+    setTodos([]);
+  }
+
+  function clearCompletedTodos() {
+    const incompleteTodos = todos.filter((todo) => !todo.completed);
+    setTodos(incompleteTodos);
+  }
+
   function incrementSession() {
     const updatedTodos = todos.map((todo) => {
-      if (todo.id === activeTodoId) {
+      if (todo.id === selectedTodoId) {
         todo.completedSessions += 1;
       }
       return todo;
@@ -123,23 +166,31 @@ const useTodo = (): TodoHook => {
     console.dir(todos);
   }, [todos]);
 
-  // Update activeTodoId in localstorage
+  // Update selectedTodoId in localstorage
   useEffect(() => {
-    console.log("Update activeTodoId.");
-    console.dir(activeTodoId);
-  }, [activeTodoId]);
+    console.log("Update selectedTodoId.");
+    console.dir(selectedTodoId);
+  }, [selectedTodoId]);
 
   return {
     todos,
-    activeTodoId,
-    activeTodo,
+    visibleTodos,
+    selectedTodoId,
+    selectedTodo,
     incrementSession,
-    handlers: {
-      handleActive,
-      handleAdd,
-      handleEdit,
-      handleRemove,
-      handleToggle,
+    currentViewType,
+    todoHandlers: {
+      selectTodo,
+      addTodo,
+      editTodo,
+      removeTodo,
+      toggleTodoCompletion,
+    },
+    todosHandlers: {
+      changeViewType,
+      resetTodos,
+      clearAllTodos,
+      clearCompletedTodos,
     },
   };
 };

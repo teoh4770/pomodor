@@ -1,5 +1,5 @@
-import { ITodo, ITodoForm, ITodoHandlers } from "./types";
-export type { ITodo, ITodoForm, ITodoHandlers };
+import { ITodo, ITodoForm, ITodoHandlers, ITodosHandlers } from "./types";
+export type { ITodo, ITodoForm, ITodoHandlers, ITodosHandlers };
 
-import { TimerModeEnum, TodoFormMode } from "./enums";
-export { TimerModeEnum, TodoFormMode };
+import { TimerModeEnum, TodoFormMode, TodosViewTypeEnum } from "./enums";
+export { TimerModeEnum, TodoFormMode, TodosViewTypeEnum };

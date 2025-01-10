@@ -14,7 +14,7 @@ export const TodoList = ({ todos, activeTodoId, todoHandlers }: TodoListProps) =
         key={todoItem.id}
         todo={todoItem}
         isActive={todoItem.id === activeTodoId}
-        handlers={todoHandlers}
+        todoHandlers={todoHandlers}
       />
     ))}
   </ol>

@@ -7,4 +7,10 @@ enum TodoFormMode {
   EDIT,
 }
 
-export { TimerModeEnum, TodoFormMode };
+enum TodosViewTypeEnum {
+  "all",
+  "completed",
+  "active",
+}
+
+export { TimerModeEnum, TodoFormMode, TodosViewTypeEnum };

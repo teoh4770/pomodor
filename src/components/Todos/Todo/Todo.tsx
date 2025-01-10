@@ -13,10 +13,10 @@ import {
 interface TodoProp {
   todo: ITodo;
   isActive: boolean;
-  handlers: ITodoHandlers;
+  todoHandlers: ITodoHandlers;
 }
 
-const Todo = ({ todo, isActive, handlers }: TodoProp) => {
+const Todo = ({ todo, isActive, todoHandlers }: TodoProp) => {
   const [isEditMode, setIsEditMode] = useState(false);
 
   const todoStyle = clsx(
@@ -37,12 +37,12 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
         <TodoForm
           todo={todo}
           onSubmit={(formData) => {
-            handlers.handleEdit(todo.id, formData);
+            todoHandlers.editTodo(todo.id, formData);
             hideEditForm();
           }}
           onCancel={() => hideEditForm()}
           onDelete={() => {
-            handlers.handleRemove(todo.id);
+            todoHandlers.removeTodo(todo.id);
             hideEditForm();
           }}
         />
@@ -56,7 +56,7 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
       role="button"
       tabIndex={0}
       data-active={isActive}
-      onClick={() => handlers.handleActive(todo.id)}
+      onClick={() => todoHandlers.selectTodo(todo.id)}
     >
       {/* contains checkbox, session and edit button */}
       <div className="flex items-center justify-between">
@@ -65,7 +65,7 @@ const Todo = ({ todo, isActive, handlers }: TodoProp) => {
           title={todo.title}
           completed={todo.completed}
           onToggle={() => {
-            handlers.handleToggle(todo.id);
+            todoHandlers.toggleTodoCompletion(todo.id);
           }}
         />
         <div className="flex items-center gap-4">

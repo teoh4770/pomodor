@@ -1,3 +1,7 @@
+// ? maybe i need to move the type to the Todos folder?
+
+import { TodosViewTypeEnum } from "@/types";
+
 interface ITodo {
   id: string;
   title: string;
@@ -14,11 +18,18 @@ interface ITodoForm {
 }
 
 interface ITodoHandlers {
-  handleActive: (id: string) => void;
-  handleAdd: (formData: ITodoForm) => void;
-  handleEdit: (id: string, formData: ITodoForm) => void;
-  handleRemove: (id: string) => void;
-  handleToggle: (id: string) => void;
+  selectTodo: (id: string) => void;
+  addTodo: (formData: ITodoForm) => void;
+  editTodo: (id: string, formData: ITodoForm) => void;
+  removeTodo: (id: string) => void;
+  toggleTodoCompletion: (id: string) => void;
 }
 
-export type { ITodo, ITodoForm, ITodoHandlers };
+interface ITodosHandlers {
+  changeViewType: (viewType: TodosViewTypeEnum) => void;
+  resetTodos: () => void;
+  clearAllTodos: () => void;
+  clearCompletedTodos: () => void;
+}
+
+export type { ITodo, ITodoForm, ITodoHandlers, ITodosHandlers };
