@@ -17,6 +17,7 @@ body {
   font-family: "Roboto", sans-serif;
 
   background-color: var(--primary-color, rgb(186 73 73));
+  overflow-x: hidden;
 }
 
 /* CUBE methodology */

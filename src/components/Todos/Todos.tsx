@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTodoContext } from "@/context";
 import { TodoForm } from "@/components/Todos/TodoForm";
 import {
@@ -8,6 +8,22 @@ import {
   TodosViews,
   TodosActions,
 } from "@/components/Todos";
+import { Confetti } from "@/common/components/Confetti";
+import { showToast } from "@/common/components/Toast";
+
+const Celebrate = () => {
+  const { allTodosCompleted } = useTodoContext();
+
+  useEffect(() => {
+    if (allTodosCompleted) {
+      showToast("Congrats", "success");
+    }
+  }, [allTodosCompleted]);
+
+  if (!allTodosCompleted) return null;
+
+  return <Confetti />;
+};
 
 const Todos = () => {
   const todoContext = useTodoContext();
@@ -15,6 +31,9 @@ const Todos = () => {
 
   return (
     <section className="mx-auto max-w-[30rem]" aria-label="Todos section">
+      {/* Celebrate component */}
+      <Celebrate />
+
       {/* ActiveTodoMessage */}
       <ActiveTodoMessage
         activeTodo={todoContext.selectedTodo}

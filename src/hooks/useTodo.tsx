@@ -11,6 +11,7 @@ export interface TodoHook {
   todos: ITodo[];
   visibleTodos: ITodo[];
   selectedTodo: ITodo | null;
+  allTodosCompleted: boolean;
   selectedTodoId: string;
   incrementSession: () => void;
   currentViewType: TodosViewTypeEnum;
@@ -59,10 +60,11 @@ const useTodo = (): TodoHook => {
   const selectedTodo = todos.find((todo) => todo.id === selectedTodoId) || null;
   const todosViews: Record<TodosViewTypeEnum, ITodo[]> = {
     [TodosViewTypeEnum.all]: todos,
-    [TodosViewTypeEnum.completed]: todos.filter(todo => todo.completed),
-    [TodosViewTypeEnum.active]: todos.filter(todo => !todo.completed),
-  }
+    [TodosViewTypeEnum.completed]: todos.filter((todo) => todo.completed),
+    [TodosViewTypeEnum.active]: todos.filter((todo) => !todo.completed),
+  };
   const visibleTodos = todosViews[currentViewType];
+  const allTodosCompleted = todos.every((todo) => todo.completed);
 
   /******************/
   /* Todos Handlers */
@@ -177,6 +179,7 @@ const useTodo = (): TodoHook => {
     visibleTodos,
     selectedTodoId,
     selectedTodo,
+    allTodosCompleted,
     incrementSession,
     currentViewType,
     todoHandlers: {
