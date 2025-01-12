@@ -3,18 +3,14 @@
 import "./App.css";
 import { AppProvider } from "@/context";
 import { Timer, Todos } from "@/components";
-import { ToastContainer } from "react-toastify";
+import { Toast } from "@/common/components/Toast";
 
 const App = () => {
   return (
     <AppProvider>
       <Timer />
       <Todos />
-      <ToastContainer
-        pauseOnHover={false}
-        pauseOnFocusLoss={false}
-        autoClose={3000}
-      />
+      <Toast pauseOnHover={false} pauseOnFocusLoss={false} autoClose={3000} />
     </AppProvider>
   );
 };

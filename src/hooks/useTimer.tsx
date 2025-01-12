@@ -3,7 +3,7 @@ import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
 import { TimerModeEnum } from "@/types";
 import { formatTime, playSound } from "@/utils";
-import { toast } from "react-toastify"; // ! <- this one need to create its own component that use this 
+import { showToast } from "@/common/components/Toast";
 
 export interface TimerHook {
   mode: TimerModeEnum;
@@ -62,7 +62,7 @@ const useTimer = (onTimerEnd?: () => void): TimerHook => {
     }
 
     function notifyUser() {
-      toast.success("You have finished a session!");
+      showToast("You have finish a session!", "success");
       playSound(RingSound);
     }
   }, [onTimerEnd]);
