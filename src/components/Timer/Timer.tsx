@@ -10,7 +10,7 @@ const Timer = () => {
   return (
     <div>
       <article
-        className="mx-auto max-w-[30rem] space-y-6 rounded-lg bg-white/10 px-4 py-6 text-center text-white sm:space-y-8 sm:py-8"
+        className="mx-auto max-w-[var(--max-w-container)] space-y-6 rounded-lg bg-white/10 px-4 py-6 text-center text-white sm:space-y-8 sm:py-8"
         aria-label="Timer"
       >
         <p>Session count: {session.sessionCount}</p>

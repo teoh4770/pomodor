@@ -30,7 +30,10 @@ const Todos = () => {
   const [showAddTodoForm, setShowAddTodoForm] = useState(false);
 
   return (
-    <section className="mx-auto max-w-[30rem]" aria-label="Todos section">
+    <section
+      className="mx-auto max-w-[var(--max-w-container)]"
+      aria-label="Todos section"
+    >
       {/* Celebrate component */}
       <Celebrate />
 

@@ -9,6 +9,9 @@
   --bg-color-3: var(--_blue);
 
   --primary-color: var(--bg-color-1);
+
+  /* width */
+  --max-w-container: 30rem;
 }
 
 body {
