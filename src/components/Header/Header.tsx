@@ -1,0 +1,55 @@
+import IconWhite from "/icon-white.png";
+import ConfigWhite from "/config-white.png";
+import GraphWhite from "/graph-white.png";
+
+const Header = () => {
+  return (
+    <header className="relative mx-auto mb-8 flex max-w-2xl justify-between gap-2 py-4">
+      {/* Logo */}
+      <div className="flex items-center gap-1">
+        <img className="aspect-square h-5 w-5" src={IconWhite} alt="" />
+        <span className="text-xl font-bold text-white">Pomodor</span>
+      </div>
+
+      {/* Header buttons: report, setting, profile */}
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          className="button"
+          data-type="secondary"
+          data-size="sm"
+        >
+          <div className="flex items-center gap-1">
+            <img className="aspect-square h-4 w-4" src={GraphWhite} alt="" />
+            <span>Report</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          className="button"
+          data-type="secondary"
+          data-size="sm"
+        >
+          <div className="flex items-center gap-1">
+            <img className="aspect-square h-4 w-4" src={ConfigWhite} alt="" />
+            <span>Setting</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          className="button"
+          data-type="secondary"
+          data-size="sm"
+        >
+          Profile
+        </button>
+      </div>
+
+      <div className="absolute bottom-0 h-0.5 w-full bg-white/20"></div>
+    </header>
+  );
+};
+
+export { Header };

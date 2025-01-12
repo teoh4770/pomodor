@@ -1,11 +1,11 @@
 import { Time } from "@/components/Timer/Time";
 import { Controls } from "@/components/Timer/Controls";
 import { Modes } from "@/components/Timer/Modes";
-import { useSessionContext, useTimerContext } from "@/context";
+import { useTimerContext } from "@/context";
 
 const Timer = () => {
   const timer = useTimerContext();
-  const session = useSessionContext();
+  // const session = useSessionContext();
 
   return (
     <div>
@@ -13,7 +13,7 @@ const Timer = () => {
         className="mx-auto max-w-[var(--max-w-container)] space-y-6 rounded-lg bg-white/10 px-4 py-6 text-center text-white sm:space-y-8 sm:py-8"
         aria-label="Timer"
       >
-        <p>Session count: {session.sessionCount}</p>
+        {/* <p>Session count: {session.sessionCount}</p> */}
         <Modes
           mode={timer.mode}
           onPomodoroClick={timer.handlePomodoroMode}

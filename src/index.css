@@ -15,11 +15,18 @@
 }
 
 body {
+  /* Spacing */
+  padding-inline: 0.75rem;
+
+  /* Typography */
   font-size: 1rem;
   font-weight: normal;
   font-family: "Roboto", sans-serif;
 
+  /* Colors */
   background-color: var(--primary-color, rgb(186 73 73));
+
+  /* Others */
   overflow-x: hidden;
 }
 
