@@ -87,6 +87,10 @@ const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: AddTodoFormProps) => {
               name="description"
               defaultValue={todo ? todo.description : ""}
               placeholder="Some notes..."
+              onFocus={(e) => {
+                const textLength = e.currentTarget.value.length;
+                e.currentTarget.setSelectionRange(textLength, textLength);
+              }}
             />
           </div>
         ) : (
