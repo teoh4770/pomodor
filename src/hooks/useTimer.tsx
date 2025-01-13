@@ -17,15 +17,15 @@ export interface TimerHook {
 
 // Constants
 const timerMode = {
-  [TimerModeEnum.pomodoro]: 2,
-  [TimerModeEnum.break]: 1,
+  [TimerModeEnum.POMODORO]: 2,
+  [TimerModeEnum.BREAK]: 1,
 };
 
 const useTimer = (onTimerEnd?: () => void): TimerHook => {
   // States
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState<TimerModeEnum>(TimerModeEnum.pomodoro);
+  const [mode, setMode] = useState<TimerModeEnum>(TimerModeEnum.POMODORO);
 
   // Derived variables
   const interval = timerMode[mode];
@@ -50,9 +50,9 @@ const useTimer = (onTimerEnd?: () => void): TimerHook => {
 
     function toggleMode() {
       setMode((prev) =>
-        prev === TimerModeEnum.pomodoro
-          ? TimerModeEnum.break
-          : TimerModeEnum.pomodoro,
+        prev === TimerModeEnum.POMODORO
+          ? TimerModeEnum.BREAK
+          : TimerModeEnum.POMODORO,
       );
     }
 
@@ -68,11 +68,11 @@ const useTimer = (onTimerEnd?: () => void): TimerHook => {
   }, [onTimerEnd]);
 
   const handlePomodoroMode = () => {
-    setMode(TimerModeEnum.pomodoro);
+    setMode(TimerModeEnum.POMODORO);
   };
 
   const handleBreakMode = () => {
-    setMode(TimerModeEnum.break);
+    setMode(TimerModeEnum.BREAK);
   };
 
   /******************/

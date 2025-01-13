@@ -28,11 +28,6 @@ const TimerSetting = () => {
         <span>Auto Start Pomodoros</span>
         <input type="checkbox" name="" id="" className="checkbox" />
       </label>
-
-      <label className="flex items-center justify-between">
-        <span>Short Break</span>
-        <input type="number" className="block border border-black" />
-      </label>
     </div>
   );
 };

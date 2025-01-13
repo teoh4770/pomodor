@@ -1,16 +1,16 @@
 enum TimerModeEnum {
-  "pomodoro",
-  "break",
+  POMODORO = "pomodoro",
+  BREAK = "break",
 }
-enum TodoFormMode {
-  ADD,
-  EDIT,
+enum TodoFormModeEnum {
+  ADD = "add",
+  EDIT = "edit",
 }
 
 enum TodosViewTypeEnum {
-  "all",
-  "completed",
-  "active",
+  ALL = "all",
+  COMPLETED = "completed",
+  ACTIVE = "active",
 }
 
-export { TimerModeEnum, TodoFormMode, TodosViewTypeEnum };
+export { TimerModeEnum, TodoFormModeEnum, TodosViewTypeEnum };

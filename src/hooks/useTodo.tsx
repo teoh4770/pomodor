@@ -53,18 +53,19 @@ const useTodo = (): TodoHook => {
   const [selectedTodoId, setSelectedTodoId] = useState("");
 
   const [currentViewType, setCurrentViewType] = useState<TodosViewTypeEnum>(
-    TodosViewTypeEnum.all,
+    TodosViewTypeEnum.ALL,
   );
 
   // Derived variables
   const selectedTodo = todos.find((todo) => todo.id === selectedTodoId) || null;
   const todosViews: Record<TodosViewTypeEnum, ITodo[]> = {
-    [TodosViewTypeEnum.all]: todos,
-    [TodosViewTypeEnum.completed]: todos.filter((todo) => todo.completed),
-    [TodosViewTypeEnum.active]: todos.filter((todo) => !todo.completed),
+    [TodosViewTypeEnum.ALL]: todos,
+    [TodosViewTypeEnum.COMPLETED]: todos.filter((todo) => todo.completed),
+    [TodosViewTypeEnum.ACTIVE]: todos.filter((todo) => !todo.completed),
   };
   const visibleTodos = todosViews[currentViewType];
-  const allTodosCompleted = todos.length > 0 && todos.every((todo) => todo.completed);
+  const allTodosCompleted =
+    todos.length > 0 && todos.every((todo) => todo.completed);
 
   /******************/
   /* Todos Handlers */
@@ -79,8 +80,8 @@ const useTodo = (): TodoHook => {
       ...todos,
       {
         id: newTodoId,
-        title: formData.title,
-        description: formData.description ?? "",
+        title: formData.title.trim(),
+        description: formData.description.trim() ?? "",
         completed: false,
         targetSessions: formData.targetSessions,
         completedSessions: 0,

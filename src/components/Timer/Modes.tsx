@@ -14,7 +14,7 @@ const Modes = ({ mode, onPomodoroClick, onBreakClick }: TabsProps) => {
         className="button"
         data-type="naked"
         data-size="sm"
-        data-active={mode === TimerModeEnum.pomodoro}
+        data-active={mode === TimerModeEnum.POMODORO}
         onClick={onPomodoroClick}
       >
         Pomodoro
@@ -23,7 +23,7 @@ const Modes = ({ mode, onPomodoroClick, onBreakClick }: TabsProps) => {
         className="button"
         data-type="naked"
         data-size="sm"
-        data-active={mode === TimerModeEnum.break}
+        data-active={mode === TimerModeEnum.BREAK}
         onClick={onBreakClick}
       >
         Short Break

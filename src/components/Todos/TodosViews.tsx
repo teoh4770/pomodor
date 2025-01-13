@@ -7,7 +7,7 @@ interface TodosViewsProps {
 
 const TodosViews = ({ todosHandlers }: TodosViewsProps) => {
   const [activeView, setActiveView] = useState<TodosViewTypeEnum>(
-    TodosViewTypeEnum.all,
+    TodosViewTypeEnum.ALL,
   );
 
   return (
@@ -19,10 +19,10 @@ const TodosViews = ({ todosHandlers }: TodosViewsProps) => {
           className="button"
           data-type="secondary"
           data-size="sm"
-          data-active={activeView === TodosViewTypeEnum.all}
+          data-active={activeView === TodosViewTypeEnum.ALL}
           onClick={() => {
-            todosHandlers.changeViewType(TodosViewTypeEnum.all);
-            setActiveView(TodosViewTypeEnum.all);
+            todosHandlers.changeViewType(TodosViewTypeEnum.ALL);
+            setActiveView(TodosViewTypeEnum.ALL);
           }}
         >
           Show All
@@ -32,10 +32,10 @@ const TodosViews = ({ todosHandlers }: TodosViewsProps) => {
           className="button"
           data-type="secondary"
           data-size="sm"
-          data-active={activeView === TodosViewTypeEnum.active}
+          data-active={activeView === TodosViewTypeEnum.ACTIVE}
           onClick={() => {
-            todosHandlers.changeViewType(TodosViewTypeEnum.active);
-            setActiveView(TodosViewTypeEnum.active);
+            todosHandlers.changeViewType(TodosViewTypeEnum.ACTIVE);
+            setActiveView(TodosViewTypeEnum.ACTIVE);
           }}
         >
           Show Active
@@ -45,10 +45,10 @@ const TodosViews = ({ todosHandlers }: TodosViewsProps) => {
           className="button"
           data-type="secondary"
           data-size="sm"
-          data-active={activeView === TodosViewTypeEnum.completed}
+          data-active={activeView === TodosViewTypeEnum.COMPLETED}
           onClick={() => {
-            todosHandlers.changeViewType(TodosViewTypeEnum.completed);
-            setActiveView(TodosViewTypeEnum.completed);
+            todosHandlers.changeViewType(TodosViewTypeEnum.COMPLETED);
+            setActiveView(TodosViewTypeEnum.COMPLETED);
           }}
         >
           Show Completed

@@ -25,7 +25,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const todo = useTodo();
 
   function handleTimerEnd() {
-    if (timer.mode === TimerModeEnum.pomodoro) {
+    if (timer.mode === TimerModeEnum.POMODORO) {
       session.increment();
       todo.incrementSession();
     }
