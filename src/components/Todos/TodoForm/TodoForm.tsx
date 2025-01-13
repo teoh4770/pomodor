@@ -9,7 +9,7 @@ import {
 
 const TodoForm = ({ todo, onSubmit, onCancel, onDelete }: AddTodoFormProps) => {
   const [showNoteComponent, setShowNoteComponent] = useState(
-    todo ? todo.description.length > 0 : false,
+    todo ? todo.description?.length > 0 : false,
   );
 
   const handleSubmit = (e: React.FormEvent) => {

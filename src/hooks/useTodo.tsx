@@ -64,7 +64,7 @@ const useTodo = (): TodoHook => {
     [TodosViewTypeEnum.active]: todos.filter((todo) => !todo.completed),
   };
   const visibleTodos = todosViews[currentViewType];
-  const allTodosCompleted = todos.every((todo) => todo.completed);
+  const allTodosCompleted = todos.length > 0 && todos.every((todo) => todo.completed);
 
   /******************/
   /* Todos Handlers */
@@ -80,7 +80,7 @@ const useTodo = (): TodoHook => {
       {
         id: newTodoId,
         title: formData.title,
-        description: formData.description,
+        description: formData.description ?? "",
         completed: false,
         targetSessions: formData.targetSessions,
         completedSessions: 0,
