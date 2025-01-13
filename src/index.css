@@ -28,6 +28,10 @@ body {
 
   /* Others */
   overflow-x: hidden;
+
+  &:has(dialog[open]) {
+    overflow-y: hidden;
+  }
 }
 
 /* CUBE methodology */
