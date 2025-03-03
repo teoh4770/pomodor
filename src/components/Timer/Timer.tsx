@@ -5,7 +5,6 @@ import { useTimerContext } from "@/context";
 
 const Timer = () => {
   const timer = useTimerContext();
-  // const session = useSessionContext();
 
   return (
     <div>
@@ -24,7 +23,7 @@ const Timer = () => {
           seconds={Math.floor(timer.remainingTime % 60)}
         />
         <Controls
-          isRunning={timer.isRunning}
+          isRunning={timer.isTimerRunning}
           onToggle={timer.handleToggle}
           onSkip={timer.handleNextMode}
         />

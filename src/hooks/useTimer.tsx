@@ -1,34 +1,39 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
-import { TimerModeEnum } from "@/types";
+import { ITimerSetting, TimerModeEnum } from "@/types";
 import { formatTime, playSound } from "@/utils";
 import { showToast } from "@/common/components/Toast";
 
 export interface TimerHook {
   mode: TimerModeEnum;
   remainingTime: number;
-  isRunning: boolean;
+  isTimerRunning: boolean;
   handleToggle: () => void;
   handleNextMode: () => void;
   handlePomodoroMode: () => void;
   handleBreakMode: () => void;
 }
 
-// Constants
-const timerMode = {
-  [TimerModeEnum.POMODORO]: 2,
-  [TimerModeEnum.BREAK]: 1,
-};
+// autoStartPomodoros: when break finish, start pomodoro
+// autoStartBreaks: when pomodoro finish, start break
 
-const useTimer = (onTimerEnd?: () => void): TimerHook => {
+const useTimer = (
+  timerSetting: ITimerSetting,
+  onTimerEnd?: () => void,
+): TimerHook => {
   // States
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isTimerRunning, setisTimerRunning] = useState(false);
   const [mode, setMode] = useState<TimerModeEnum>(TimerModeEnum.POMODORO);
 
   // Derived variables
-  const interval = timerMode[mode];
+  const MINUTE = 60;
+  const timerConfig = {
+    [TimerModeEnum.POMODORO]: timerSetting.pomodoroDuration * MINUTE,
+    [TimerModeEnum.BREAK]: timerSetting.breakDuration * MINUTE,
+  };
+  const interval = timerConfig[mode];
   const remainingTime = interval - elapsedTime;
   const isTimerEnd = interval <= elapsedTime;
 
@@ -36,44 +41,66 @@ const useTimer = (onTimerEnd?: () => void): TimerHook => {
   /* Timer Handlers */
   /******************/
   const handleToggle = () => {
-    setIsRunning((prev) => !prev);
+    setisTimerRunning((prev) => !prev);
     playSound(ClickSound);
   };
 
   const handleNextMode = useCallback(() => {
-    // timer end handler, allow integration with instances other than timer
+    // Timer end event runs first
     if (onTimerEnd) onTimerEnd();
 
-    toggleMode();
-    reset();
+    const nextMode = getNextMode(mode);
     notifyUser();
+    handleAutoStartNextSession(nextMode);
 
-    function toggleMode() {
-      setMode((prev) =>
-        prev === TimerModeEnum.POMODORO
-          ? TimerModeEnum.BREAK
-          : TimerModeEnum.POMODORO,
-      );
-    }
+    setMode(nextMode); // why spacing out
 
-    function reset() {
-      setIsRunning(false);
-      setElapsedTime(0);
+    function getNextMode(currentMode: TimerModeEnum) {
+      return currentMode === TimerModeEnum.POMODORO
+        ? TimerModeEnum.BREAK
+        : TimerModeEnum.POMODORO;
     }
 
     function notifyUser() {
       showToast("You have finish a session!", "success");
       playSound(RingSound);
     }
-  }, [onTimerEnd]);
+
+    function handleAutoStartNextSession(nextMode: TimerModeEnum) {
+      setisTimerRunning(shouldAutoStart(nextMode));
+    }
+
+    function shouldAutoStart(nextMode: TimerModeEnum) {
+      return (
+        (timerSetting.autoStartBreak && nextMode === TimerModeEnum.BREAK) ||
+        (timerSetting.autoStartPomodoros && nextMode === TimerModeEnum.POMODORO)
+      );
+    }
+  }, [
+    mode,
+    onTimerEnd,
+    timerSetting.autoStartBreak,
+    timerSetting.autoStartPomodoros,
+  ]);
 
   const handlePomodoroMode = () => {
     setMode(TimerModeEnum.POMODORO);
+    resetTimer();
   };
 
   const handleBreakMode = () => {
     setMode(TimerModeEnum.BREAK);
+    resetTimer();
   };
+
+  /********************/
+  /* Helper Functions */
+  /********************/
+
+  const resetTimer = () => {
+    setisTimerRunning(false);
+    setElapsedTime(0);
+  }
 
   /******************/
   /* Timer Effects  */
@@ -102,22 +129,22 @@ const useTimer = (onTimerEnd?: () => void): TimerHook => {
 
     // Guard: Handle timer end state
     if (isTimerEnd) {
-      stopTimer();
+      resetTimer();
       handleNextMode();
       return;
     }
 
-    if (isRunning) {
+    if (isTimerRunning) {
       startTimer();
     }
 
     return stopTimer;
-  }, [handleNextMode, isRunning, isTimerEnd]);
+  }, [handleNextMode, isTimerRunning, isTimerEnd]);
 
   return {
     mode,
     remainingTime,
-    isRunning,
+    isTimerRunning,
     handleToggle,
     handleNextMode,
     handlePomodoroMode,

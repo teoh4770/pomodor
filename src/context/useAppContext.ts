@@ -10,6 +10,7 @@ function useTodoContext() {
 
   return todo;
 }
+
 function useSessionContext() {
   const { session } = useContext(AppContext);
 
@@ -19,6 +20,7 @@ function useSessionContext() {
 
   return session;
 }
+
 function useTimerContext() {
   const { timer } = useContext(AppContext);
 
@@ -29,4 +31,19 @@ function useTimerContext() {
   return timer;
 }
 
-export { useTodoContext, useSessionContext, useTimerContext };
+function useSettingContext() {
+  const { setting } = useContext(AppContext);
+
+  if (setting === undefined) {
+    throw new Error("useSettingContext must be used with an AppContext");
+  }
+
+  return setting;
+}
+
+export {
+  useTodoContext,
+  useSessionContext,
+  useTimerContext,
+  useSettingContext,
+};

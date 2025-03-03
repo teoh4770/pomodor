@@ -1,6 +1,4 @@
-// ? maybe i need to move the type to the Todos folder?
-
-import { TodosViewTypeEnum } from "@/types";
+import { TimerModeEnum, TodosViewTypeEnum, AlarmSoundEnum, ThemeEnum, TickingSoundEnum } from "@/types";
 
 interface ITodo {
   id: string;
@@ -32,4 +30,35 @@ interface ITodosHandlers {
   clearCompletedTodos: () => void;
 }
 
-export type { ITodo, ITodoForm, ITodoHandlers, ITodosHandlers };
+interface ITimerSetting {
+  pomodoroDuration: number;
+  breakDuration: number;
+  autoStartBreak: boolean;
+  autoStartPomodoros: boolean;
+}
+
+interface ISoundSetting {
+  alarmSoundType: AlarmSoundEnum;
+  tickingSoundType: TickingSoundEnum;
+}
+
+interface ITaskSetting {
+  autoCheckTasks: boolean;
+  autoSwitchTasks: boolean;
+}
+
+interface IThemeSettings {
+  darkModeWhenRunning: boolean;
+  themes: Record<TimerModeEnum, ThemeEnum>;
+}
+
+export type {
+  ITodo,
+  ITodoForm,
+  ITodoHandlers,
+  ITodosHandlers,
+  ITimerSetting,
+  ISoundSetting,
+  ITaskSetting,
+  IThemeSettings,
+};
