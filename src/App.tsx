@@ -2,7 +2,7 @@
 // import viteLogo from '/vite.svg'
 import "./App.css";
 import { AppProvider } from "@/context";
-import { Header, Timer, Todos } from "@/components";
+import { Header, Timer, Todos, Summary } from "@/components";
 import { Toast } from "@/common/components/Toast";
 
 const App = () => {
@@ -11,6 +11,7 @@ const App = () => {
       <Header />
       <Timer />
       <Todos />
+      <Summary />
       <Toast pauseOnHover={false} pauseOnFocusLoss={false} autoClose={3000} />
     </AppProvider>
   );
