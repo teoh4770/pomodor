@@ -81,7 +81,7 @@ const useTodo = (): TodoHook => {
       {
         id: newTodoId,
         title: formData.title.trim(),
-        description: formData.description.trim() ?? "",
+        description: formData.description ? formData.description.trim() : "",
         completed: false,
         targetSessions: formData.targetSessions,
         completedSessions: 0,
