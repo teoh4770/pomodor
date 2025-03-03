@@ -21,6 +21,7 @@ const TimerSetting = () => {
               name="pomodoro-duration"
               defaultValue={timerSetting.pomodoroDuration}
               min={1}
+              step={0.1}
               required
             />
           </label>
@@ -33,6 +34,7 @@ const TimerSetting = () => {
               name="break-duration"
               defaultValue={timerSetting.breakDuration}
               min={1}
+              step={0.1}
               required
             />
           </label>
