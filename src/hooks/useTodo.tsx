@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  ITimerSetting,
   ITodo,
   ITodoForm,
   ITodoHandlers,
@@ -13,13 +14,20 @@ export interface TodoHook {
   selectedTodo: ITodo | null;
   allTodosCompleted: boolean;
   selectedTodoId: string;
-  incrementSession: () => void;
   currentViewType: TodosViewTypeEnum;
+  totalPomodoroSessions: number;
+  completedPomodoroSessions: number;
+  totalRemainingTimeInMinutes: number;
+  getFinishedTime: () => {
+    hours: number,
+    minutes: number
+  }
+  incrementSession: () => void;
   todoHandlers: ITodoHandlers;
   todosHandlers: ITodosHandlers;
 }
 
-const useTodo = (): TodoHook => {
+const useTodo = (timerSetting: ITimerSetting): TodoHook => {
   // States
   const [todos, setTodos] = useState<ITodo[]>([
     {
@@ -58,14 +66,45 @@ const useTodo = (): TodoHook => {
 
   // Derived variables
   const selectedTodo = todos.find((todo) => todo.id === selectedTodoId) || null;
+
+  // Categorize todos based on view type
   const todosViews: Record<TodosViewTypeEnum, ITodo[]> = {
     [TodosViewTypeEnum.ALL]: todos,
     [TodosViewTypeEnum.COMPLETED]: todos.filter((todo) => todo.completed),
     [TodosViewTypeEnum.ACTIVE]: todos.filter((todo) => !todo.completed),
   };
   const visibleTodos = todosViews[currentViewType];
+
+  // Check if all todos are completed
   const allTodosCompleted =
     todos.length > 0 && todos.every((todo) => todo.completed);
+  
+  // Calculate sessions
+  const totalPomodoroSessions = todos.reduce(
+    (acc, todo) => acc + todo.targetSessions,
+    0,
+  );
+  const completedPomodoroSessions = todos.reduce(
+    (acc, todo) => todo.completed ? acc : acc + todo.completedSessions,
+    0,
+  )
+  const incompletePomodoroSessions = totalPomodoroSessions - completedPomodoroSessions;
+
+  // Calculate the total remaining time (in minutes) needed to complete all remaining pomodoro sessions
+  // Formula: (remainingPomodoroCount * pomodoroDuration) + (breakCount * breakDuration)
+  const totalRemainingTimeInMinutes = incompletePomodoroSessions * timerSetting.pomodoroDuration + incompletePomodoroSessions * timerSetting.breakDuration;
+
+  // Calculates the estimated finishing time based on the total remaining time
+  const getFinishedTime = () => {
+    const date = new Date();
+    date.setTime(date.getTime() + totalRemainingTimeInMinutes * 60_000);
+
+    return {
+      hours: date.getHours(),
+      minutes: date.getMinutes()
+    }
+  }
+
 
   /******************/
   /* Todos Handlers */
@@ -181,8 +220,12 @@ const useTodo = (): TodoHook => {
     selectedTodoId,
     selectedTodo,
     allTodosCompleted,
-    incrementSession,
     currentViewType,
+    totalPomodoroSessions,
+    completedPomodoroSessions,
+    totalRemainingTimeInMinutes,
+    getFinishedTime,
+    incrementSession,
     todoHandlers: {
       selectTodo,
       addTodo,

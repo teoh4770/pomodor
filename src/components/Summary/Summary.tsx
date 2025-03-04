@@ -1,30 +1,53 @@
+import { useTodoContext } from "@/context";
+import { formatTime } from "@/utils";
+import { useMemo } from "react";
+
 const Summary = () => {
+  const {
+    todos,
+    totalPomodoroSessions,
+    completedPomodoroSessions,
+    totalRemainingTimeInMinutes,
+    getFinishedTime,
+  } = useTodoContext();
+
+  const { hours, minutes } = useMemo(() => getFinishedTime(), [getFinishedTime]);
+  
+  const remainingHours = (totalRemainingTimeInMinutes / 60).toFixed(1);
+
   return (
     <section
       className="mx-auto mt-7 max-w-[var(--max-w-container)] border-t-2 bg-white/10 px-3 py-5 text-white"
       aria-label="Pomodoro summary section"
     >
-      {/* Render the summary details, if got todos */}
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        {/* Pomodoro infos */}
-        <p className="flex items-center">
-          <span className="mr-1 text-white/70">Pomodoros:</span>
-          <span className="text-2xl font-bold">3</span>
-          <span className="mx-1 font-extralight">/</span>
-          <span className="text-2xl font-bold">5</span>
-        </p>
-        {/* Finish time info */}
-        <p className="flex items-center space-x-1">
-          <span className="text-white/70">Finish At:</span>
-          <span className="text-2xl font-bold">3:45</span>
-          <span className="text-sm text-white/70">(Remaining Time)</span>
-        </p>
-      </div>
+      {todos.length > 0 ? (
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          {/* Pomodoro Progress */}
+          <p className="flex items-center">
+            <span className="mr-1 text-white/70">Pomodoros:</span>
+            <span className="text-2xl font-bold">
+              {completedPomodoroSessions}
+            </span>
+            <span className="mx-1 font-extralight">/</span>
+            <span className="text-2xl font-bold">{totalPomodoroSessions}</span>
+          </p>
 
-      {/* If no todos, then provide a fallback UI */}
-      <p className="text-center text-sm">
-        Please add some tasks to track your progress.
-      </p>
+          {/* Estimate Finish Time */}
+          <p className="flex items-center space-x-1">
+            <span className="text-white/70">Finish At:</span>
+            <span className="text-2xl font-bold">
+              {formatTime(hours)}:{formatTime(minutes)}
+            </span>
+            <span className="text-sm text-white/70">
+              ({remainingHours}h)
+            </span>
+          </p>
+        </div>
+      ) : (
+        <p className="text-center text-sm">
+          Please add some tasks to track your progress.
+        </p>
+      )}
     </section>
   );
 };
