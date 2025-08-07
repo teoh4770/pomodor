@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 export interface SessionHook {
   sessionCount: number;
@@ -10,7 +10,7 @@ export interface SessionHook {
 
 // To keep track of the user sessions for every completed Pomodoro session
 const useSession = (): SessionHook => {
-  const [sessionCount, setSessionCount] = useState(0);
+  const [sessionCount, setSessionCount] = useLocalStorage('session-count', 0);
 
   const increment = (condition?: boolean) => {
     if (condition === undefined || condition) {
