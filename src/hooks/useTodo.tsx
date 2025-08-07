@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   ITimerSetting,
   ITodo,
@@ -59,9 +59,10 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
     },
   ]);
 
-  const [selectedTodoId, setSelectedTodoId] = useState("");
+  const [selectedTodoId, setSelectedTodoId] = useLocalStorage('selected-todo-id', '');
 
-  const [currentViewType, setCurrentViewType] = useState<TodosViewTypeEnum>(
+  const [currentViewType, setCurrentViewType] = useLocalStorage<TodosViewTypeEnum>(
+    'current-view-type',
     TodosViewTypeEnum.ALL,
   );
 
