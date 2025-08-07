@@ -8,7 +8,8 @@ import {
   ITaskSetting,
   IThemeSettings,
 } from "@/types";
-import { useState } from "react";
+
+import { useLocalStorage } from "usehooks-ts";
 
 export interface SettingHook {
   timerSetting: ITimerSetting;
@@ -36,7 +37,7 @@ export interface SettingHook {
 
 const useSetting = (): SettingHook => {
   // Timer Setting
-  const [timerSetting, setTimerSetting] = useState<ITimerSetting>({
+  const [timerSetting, setTimerSetting] = useLocalStorage<ITimerSetting>('timer-setting', {
     pomodoroDuration: 30, // in minutes
     breakDuration: 5, // in minutes
     autoStartBreak: false,
@@ -59,8 +60,8 @@ const useSetting = (): SettingHook => {
   };
 
   // Sound Settings
-  const [soundSetting, setSoundSetting] = useState<ISoundSetting>({
-    // should take a alarm sound enum that contains 5 sound options -> which we can do alarmSound[alarmSoundType] -> gives us the sound
+  const [soundSetting, setSoundSetting] = useLocalStorage<ISoundSetting>('sound-setting', {
+    // should take an alarm sound enum that contains 5 sound options -> which we can do alarmSound[alarmSoundType] -> gives us the sound
     // should take a ticking sound enum that contains 5 sound options -> which we can do tickingSound[tickingSoundType] -> gives us the sound
     alarmSoundType: AlarmSoundEnum.BELL,
     tickingSoundType: TickingSoundEnum.NONE,
@@ -74,7 +75,7 @@ const useSetting = (): SettingHook => {
   };
 
   // Task Settings
-  const [taskSetting, setTaskSetting] = useState<ITaskSetting>({
+  const [taskSetting, setTaskSetting] = useLocalStorage<ITaskSetting>('task-setting', {
     autoCheckTasks: false,
     autoSwitchTasks: false,
   });
@@ -93,7 +94,7 @@ const useSetting = (): SettingHook => {
     });
   };
 
-  const [themeSetting, setThemeSetting] = useState<IThemeSettings>({
+  const [themeSetting, setThemeSetting] = useLocalStorage<IThemeSettings>('theme-settting', {
     darkModeWhenRunning: false,
     themes: {
       // should have a theme enum that contain 5 color options -> which we can do themes[color] -> gives us the theme color
