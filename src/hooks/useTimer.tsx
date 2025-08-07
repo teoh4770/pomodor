@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
 import { ITimerSetting, TimerModeEnum } from "@/types";
 import { formatTime, playSound } from "@/utils";
 import { showToast } from "@/common/components/Toast";
+import { useLocalStorage } from "usehooks-ts";
 
 export interface TimerHook {
   mode: TimerModeEnum;
@@ -23,9 +24,9 @@ const useTimer = (
   onTimerEnd?: () => void,
 ): TimerHook => {
   // States
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [isTimerRunning, setisTimerRunning] = useState(false);
-  const [mode, setMode] = useState<TimerModeEnum>(TimerModeEnum.POMODORO);
+  const [elapsedTime, setElapsedTime] = useLocalStorage('elapsedTime', 0);
+  const [isTimerRunning, setIsTimerRunning] = useLocalStorage('isTimerRunning', false);
+  const [mode, setMode] = useLocalStorage<TimerModeEnum>('timer-mode', TimerModeEnum.POMODORO);
 
   // Derived variables
   const MINUTE = 60;
@@ -41,7 +42,7 @@ const useTimer = (
   /* Timer Handlers */
   /******************/
   const handleToggle = () => {
-    setisTimerRunning((prev) => !prev);
+    setIsTimerRunning((prev) => !prev);
     playSound(ClickSound);
   };
 
@@ -67,7 +68,7 @@ const useTimer = (
     }
 
     function handleAutoStartNextSession(nextMode: TimerModeEnum) {
-      setisTimerRunning(shouldAutoStart(nextMode));
+      setIsTimerRunning(shouldAutoStart(nextMode));
     }
 
     function shouldAutoStart(nextMode: TimerModeEnum) {
@@ -98,7 +99,7 @@ const useTimer = (
   /********************/
 
   const resetTimer = () => {
-    setisTimerRunning(false);
+    setIsTimerRunning(false);
     setElapsedTime(0);
   }
 
