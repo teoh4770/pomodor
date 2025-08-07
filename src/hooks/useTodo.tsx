@@ -7,6 +7,7 @@ import {
   ITodosHandlers,
   TodosViewTypeEnum,
 } from "@/types";
+import { useLocalStorage } from "usehooks-ts";
 
 export interface TodoHook {
   todos: ITodo[];
@@ -29,7 +30,7 @@ export interface TodoHook {
 
 const useTodo = (timerSetting: ITimerSetting): TodoHook => {
   // States
-  const [todos, setTodos] = useState<ITodo[]>([
+  const [todos, setTodos] = useLocalStorage<ITodo[]>('todos', [
     {
       id: "1",
       title: "Study React.js",
@@ -161,7 +162,6 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
     });
 
     setTodos(updatedTodos);
-    // todo: select next incomplete todo
   }
 
   function changeViewType(viewType: TodosViewTypeEnum) {
