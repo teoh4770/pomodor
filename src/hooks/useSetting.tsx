@@ -16,19 +16,27 @@ export interface SettingHook {
   timerSettingHandler: (
     pomodoroDuration: number,
     breakDuration: number,
-    autoStartPomodoros: boolean,
     autoStartBreak: boolean,
+    autoStartPomodoros: boolean,
   ) => void;
+
   soundSetting: ISoundSetting;
   soundSettingHandlers: {
+    soundSettingHandler: (alarmSoundVolume: number, alarmSoundType: AlarmSoundEnum) => void;
     setAlarmSoundType: (soundType: AlarmSoundEnum) => void;
     setTickingSoundType: (soundType: TickingSoundEnum) => void;
   };
+
   taskSetting: ITaskSetting;
   taskSettingHandlers: {
+    taskSettingHandler: (
+      autoCheckTasks: boolean,
+      autoSwitchTasks: boolean
+    ) => void;
     toggleAutoCheckTasks: () => void;
     toggleAutoSwitchTasks: () => void;
   };
+
   themeSetting: IThemeSettings;
   themeSettingHandlers: {
     toggleDarkMode: () => void;
@@ -47,15 +55,16 @@ const useSetting = (): SettingHook => {
   const timerSettingHandler = (
     pomodoroDuration: number,
     breakDuration: number,
-    autoStartPomodoros: boolean,
     autoStartBreak: boolean,
+    autoStartPomodoros: boolean,
   ) => {
+    console.log(timerSetting)
     setTimerSetting({
       ...timerSetting,
-      pomodoroDuration,
-      breakDuration,
-      autoStartPomodoros,
-      autoStartBreak,
+      pomodoroDuration: pomodoroDuration,
+      breakDuration: breakDuration,
+      autoStartBreak: autoStartBreak,
+      autoStartPomodoros: autoStartPomodoros,
     });
   };
 
@@ -63,9 +72,22 @@ const useSetting = (): SettingHook => {
   const [soundSetting, setSoundSetting] = useLocalStorage<ISoundSetting>('sound-setting', {
     // should take an alarm sound enum that contains 5 sound options -> which we can do alarmSound[alarmSoundType] -> gives us the sound
     // should take a ticking sound enum that contains 5 sound options -> which we can do tickingSound[tickingSoundType] -> gives us the sound
+    alarmSoundVolume: 100,
     alarmSoundType: AlarmSoundEnum.BELL,
     tickingSoundType: TickingSoundEnum.NONE,
   });
+
+
+  const soundSettingHandler = (
+    alarmSoundVolume: number,
+    alarmSoundType: AlarmSoundEnum,
+  ) => {
+    setSoundSetting({
+      ...soundSetting,
+      alarmSoundVolume: alarmSoundVolume,
+      alarmSoundType: alarmSoundType,
+    })
+  };
 
   const setAlarmSoundType = (soundType: AlarmSoundEnum) => {
     setSoundSetting({ ...soundSetting, alarmSoundType: soundType });
@@ -79,6 +101,17 @@ const useSetting = (): SettingHook => {
     autoCheckTasks: false,
     autoSwitchTasks: false,
   });
+
+  const taskSettingHandler = (
+    autoCheckTasks: boolean,
+    autoSwitchTasks: boolean,
+  ) => {
+    setTaskSetting({
+      ...taskSetting,
+      autoCheckTasks: autoCheckTasks,
+      autoSwitchTasks: autoSwitchTasks,
+    })
+  };
 
   const toggleAutoCheckTasks = () => {
     setTaskSetting({
@@ -110,20 +143,18 @@ const useSetting = (): SettingHook => {
     });
   };
 
-  // Effects
-  // support localStorage, declare it in an effect
-
-  // Return consolidated settings and handlers
   return {
     timerSetting,
     timerSettingHandler,
     soundSetting,
     soundSettingHandlers: {
+      soundSettingHandler,
       setAlarmSoundType,
       setTickingSoundType,
     },
     taskSetting,
     taskSettingHandlers: {
+      taskSettingHandler,
       toggleAutoCheckTasks,
       toggleAutoSwitchTasks,
     },

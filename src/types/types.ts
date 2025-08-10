@@ -38,6 +38,7 @@ interface ITimerSetting {
 }
 
 interface ISoundSetting {
+  alarmSoundVolume: number;
   alarmSoundType: AlarmSoundEnum;
   tickingSoundType: TickingSoundEnum;
 }

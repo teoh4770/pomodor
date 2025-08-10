@@ -1,7 +1,6 @@
 import { useSettingContext } from "@/context";
 
 const TimerSetting = () => {
-  // does not matter, because setting is not in sync with timer timerMode value
   const { timerSetting } = useSettingContext();
 
   return (
@@ -43,7 +42,7 @@ const TimerSetting = () => {
 
       <label className="flex items-center justify-between">
         <span>Auto Start Breaks</span>
-        <input type="checkbox" name="auto-start-break" className="checkbox" />
+        <input type="checkbox" name="auto-start-break" className="checkbox" defaultChecked={timerSetting.autoStartBreak} />
       </label>
 
       <label className="flex items-center justify-between">
@@ -52,6 +51,7 @@ const TimerSetting = () => {
           type="checkbox"
           name="auto-start-pomodoro"
           className="checkbox"
+          defaultChecked={timerSetting.autoStartPomodoros}
         />
       </label>
     </div>

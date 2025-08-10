@@ -5,6 +5,7 @@ import { SoundSetting } from "./SoundSetting";
 import { TaskSetting } from "./TaskSetting";
 import { SettingsFooter } from "./SettingsFooter";
 import { useSettingContext } from "@/context";
+import * as React from "react";
 
 type SettingProps = object;
 
@@ -26,12 +27,31 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
     const form = e.currentTarget as HTMLFormElement;
     const settingFormData = new FormData(form);
 
+    for (const [key, value] of settingFormData.entries()) {
+      console.log(key, value);
+    }
+
+    console.log(Boolean(settingFormData.get('auto-check-tasks')),
+      Boolean(settingFormData.get('auto-switch-tasks')),)
+
     // Update timer setting
     setting.timerSettingHandler(
       Number(settingFormData.get("pomodoro-duration")!),
       Number(settingFormData.get("break-duration")!),
-      Boolean(settingFormData.get("auto-start-pomodoro")!),
       Boolean(settingFormData.get("auto-start-break")!),
+      Boolean(settingFormData.get("auto-start-pomodoro")!),
+    );
+
+    // Update task setting
+    setting.taskSettingHandlers.taskSettingHandler(
+      Boolean(settingFormData.get('auto-check-tasks')),
+      Boolean(settingFormData.get('auto-switch-tasks')),
+    );
+
+    // Update sound setting
+    setting.soundSettingHandlers.soundSettingHandler(
+      Number(settingFormData.get('alarm-sound-volume')),
+      Number(settingFormData.get('alarm-sound')),
     );
   }
 
