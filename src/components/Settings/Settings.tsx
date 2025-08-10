@@ -27,13 +27,6 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
     const form = e.currentTarget as HTMLFormElement;
     const settingFormData = new FormData(form);
 
-    for (const [key, value] of settingFormData.entries()) {
-      console.log(key, value);
-    }
-
-    console.log(Boolean(settingFormData.get('auto-check-tasks')),
-      Boolean(settingFormData.get('auto-switch-tasks')),)
-
     // Update timer setting
     setting.timerSettingHandler(
       Number(settingFormData.get("pomodoro-duration")!),
