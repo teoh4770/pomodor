@@ -18,7 +18,6 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
   // Trigger validation on form change
   const handleFormChange = (e: React.FormEvent) => {
     const form = e.currentTarget as HTMLFormElement;
-    console.log("is form valid?: ", form.checkValidity())
     setIsFormValid(form.checkValidity()); // Updates based on built-in HTML5 validation
   };
 
