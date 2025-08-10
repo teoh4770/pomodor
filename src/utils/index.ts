@@ -1,4 +1,8 @@
-const playSound = (src: string) => {
+const playSound = (src: string | null) => {
+  if (!src) {
+    return;
+  }
+
   try {
     const milliseconds = 1000;
     const interval = 2 * milliseconds;

@@ -19,7 +19,7 @@ const TimerSetting = () => {
               className="block border border-black"
               name="pomodoro-duration"
               defaultValue={timerSetting.pomodoroDuration}
-              min={1}
+              min={0.02}
               step={0.1}
               required
             />

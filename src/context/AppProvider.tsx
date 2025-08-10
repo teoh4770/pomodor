@@ -24,7 +24,7 @@ const AppContext = createContext<IAppContext>({
 // Create AppProvider to provide hooks to the consumers
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const setting = useSetting();
-  const timer = useTimer(setting.timerSetting, handleTimerEnd);
+  const timer = useTimer(setting.timerSetting, setting.soundSetting, handleTimerEnd);
   const session = useSession();
   const todo = useTodo(setting.timerSetting);
 

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
 import RingSound from "/sounds/ring/bell.mp3";
-import { ITimerSetting, TimerModeEnum } from "@/types";
+import DigitalSound from "/sounds/ring/digital.mp3";
+import { AlarmSoundEnum, ISoundSetting, ITimerSetting, TimerModeEnum } from "@/types";
 import { formatTime, playSound } from "@/utils";
 import { showToast } from "@/common/components/Toast";
 import { useLocalStorage } from "usehooks-ts";
@@ -21,6 +22,7 @@ export interface TimerHook {
 
 const useTimer = (
   timerSetting: ITimerSetting,
+  soundSetting: ISoundSetting,
   onTimerEnd?: () => void,
 ): TimerHook => {
   // States
@@ -63,8 +65,22 @@ const useTimer = (
     }
 
     function notifyUser() {
+      // can extract the logic inside to a sound service
+      // become a source of truth
+      // and use the sound service here instead of all the logic inside, which is weird
+      // and can be used in the setting as well
+
+      const alarmSoundType = soundSetting.alarmSoundType;
+      let src = null;
+
+      if (alarmSoundType === AlarmSoundEnum.BELL) {
+        src = RingSound;
+      } else if (alarmSoundType === AlarmSoundEnum.DIGITAL) {
+        src = DigitalSound;
+      }
+
       showToast("You have finish a session!", "success");
-      playSound(RingSound);
+      playSound(src);
     }
 
     function handleAutoStartNextSession(nextMode: TimerModeEnum) {
