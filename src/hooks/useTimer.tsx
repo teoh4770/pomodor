@@ -64,7 +64,7 @@ const useTimer = (
     }
 
     function notifyUser() {
-      playAlarmSound(soundSetting.alarmSoundType);
+      playAlarmSound(soundSetting.alarmSoundType, soundSetting.alarmSoundVolume);
       showToast("You have finish a session!", "success");
     }
 

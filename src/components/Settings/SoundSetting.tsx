@@ -2,7 +2,7 @@ import { useSettingContext } from "@/context";
 import { alarmSoundOptions } from "@/services/soundService";
 
 const SoundSetting = () => {
-  const { soundSetting } = useSettingContext();
+  const { soundSetting, soundSettingHandlers } = useSettingContext();
 
   return (
     <div className="space-y-4 border-b py-6">
@@ -23,8 +23,12 @@ const SoundSetting = () => {
         </label>
         <label className="flex items-center justify-between" htmlFor="alarm-sound-volume">
           <span className="invisible">Volume</span>
-          <input type="range" name="alarm-sound-volume" id="alarm-sound-volume" min={0} max={100}
-                 defaultValue={soundSetting.alarmSoundVolume} />
+          <div>
+            <span>{soundSetting.alarmSoundVolume}</span>
+            <input type="range" name="alarm-sound-volume" id="alarm-sound-volume" min={0} max={100}
+                   onChange={(e) => soundSettingHandlers.setAlarmSoundVolume(Number(e.currentTarget.value))}
+                   value={soundSetting.alarmSoundVolume} />
+          </div>
         </label>
       </div>
 

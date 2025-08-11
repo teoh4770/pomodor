@@ -15,9 +15,9 @@ const alarmSoundMap = new Map(
   alarmSoundOptions.map(alarmSound => [alarmSound.value, alarmSound.src])
 );
 
-export const playAlarmSound = (alarmSoundType: AlarmSoundEnum) => {
+export const playAlarmSound = (alarmSoundType: AlarmSoundEnum, volume: number) => {
   const alarmSoundSrc = alarmSoundMap.get(alarmSoundType) || null;
   if (alarmSoundSrc) {
-    playSound(alarmSoundSrc);
+    playSound(alarmSoundSrc, volume);
   }
 };

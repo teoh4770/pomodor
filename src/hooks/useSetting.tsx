@@ -23,6 +23,7 @@ export interface SettingHook {
   soundSetting: ISoundSetting;
   soundSettingHandlers: {
     soundSettingHandler: (alarmSoundVolume: number, alarmSoundType: AlarmSoundEnum) => void;
+    setAlarmSoundVolume: (volume: number) => void;
     setAlarmSoundType: (soundType: AlarmSoundEnum) => void;
     setTickingSoundType: (soundType: TickingSoundEnum) => void;
   };
@@ -89,6 +90,10 @@ const useSetting = (): SettingHook => {
     })
   };
 
+  const setAlarmSoundVolume = (volume: number) => {
+    setSoundSetting({ ...soundSetting, alarmSoundVolume: volume });
+  };
+
   const setAlarmSoundType = (soundType: AlarmSoundEnum) => {
     setSoundSetting({ ...soundSetting, alarmSoundType: soundType });
   };
@@ -149,6 +154,7 @@ const useSetting = (): SettingHook => {
     soundSetting,
     soundSettingHandlers: {
       soundSettingHandler,
+      setAlarmSoundVolume,
       setAlarmSoundType,
       setTickingSoundType,
     },

@@ -1,9 +1,10 @@
-const playSound = (src: string) => {
+const playSound = (src: string, volume: number = 100) => {
   try {
     const milliseconds = 1000;
     const interval = 2 * milliseconds;
 
     const audio = new Audio(src);
+    audio.volume = volume / 100; // convert 0-100 to 0-1
     audio.play();
     setTimeout(() => {
       audio.pause();
