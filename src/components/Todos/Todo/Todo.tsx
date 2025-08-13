@@ -18,6 +18,7 @@ interface TodoProp {
 
 const Todo = ({ todo, isActive, todoHandlers }: TodoProp) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const toggleAutoChecked = true;
 
   const todoStyle = clsx(
     "cursor-pointer space-y-2 rounded-lg bg-white px-5 py-3 -outline-offset-4 hover:outline hover:outline-4",
@@ -63,7 +64,7 @@ const Todo = ({ todo, isActive, todoHandlers }: TodoProp) => {
         <Checkbox
           id={todo.id}
           title={todo.title}
-          completed={todo.completed}
+          completed={todo.completed || (toggleAutoChecked && todo.targetSessions === todo.completedSessions)}
           onToggle={() => {
             todoHandlers.toggleTodoCompletion(todo.id);
           }}
