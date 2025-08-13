@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   ITimerSetting,
   ITodo,
@@ -199,21 +198,6 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
 
     setTodos(updatedTodos);
   }
-
-  /******************/
-  /* Todos Effects  */
-  /******************/
-  // Update todos in localstorage
-  useEffect(() => {
-    console.log("Update todos in localstorage.");
-    console.dir(todos);
-  }, [todos]);
-
-  // Update selectedTodoId in localstorage
-  useEffect(() => {
-    console.log("Update selectedTodoId.");
-    console.dir(selectedTodoId);
-  }, [selectedTodoId]);
 
   return {
     todos,
