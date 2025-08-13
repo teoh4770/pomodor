@@ -21,6 +21,7 @@ interface ITodoHandlers {
   editTodo: (id: string, formData: ITodoForm) => void;
   removeTodo: (id: string) => void;
   toggleTodoCompletion: (id: string) => void;
+  setTodoCompletion: (id: string, completed: boolean) => void;
 }
 
 interface ITodosHandlers {

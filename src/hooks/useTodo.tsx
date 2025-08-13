@@ -1,10 +1,11 @@
 import {
+  ITaskSetting,
   ITimerSetting,
   ITodo,
   ITodoForm,
   ITodoHandlers,
   ITodosHandlers,
-  TodosViewTypeEnum,
+  TodosViewTypeEnum
 } from "@/types";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -27,7 +28,7 @@ export interface TodoHook {
   todosHandlers: ITodosHandlers;
 }
 
-const useTodo = (timerSetting: ITimerSetting): TodoHook => {
+const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHook => {
   // States
   const [todos, setTodos] = useLocalStorage<ITodo[]>('todos', [
     {
@@ -142,7 +143,7 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
       };
     });
 
-    setTodos(updatedTodos);
+    setTodos(applyAutoCheck(updatedTodos));
   }
 
   function removeTodo(id: string) {
@@ -158,6 +159,19 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
       return {
         ...todo,
         completed: !todo.completed,
+      };
+    });
+
+    setTodos(updatedTodos);
+  }
+
+  function setTodoCompletion(id: string, completed: boolean) {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id !== id) return todo;
+
+      return {
+        ...todo,
+        completed: completed
       };
     });
 
@@ -196,7 +210,27 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
       return todo;
     });
 
-    setTodos(updatedTodos);
+    setTodos(applyAutoCheck(updatedTodos));
+  }
+
+  function applyAutoCheck(updatedTodos: ITodo[]) {
+    if (!taskSetting.autoCheckTasks) return updatedTodos;
+
+    return updatedTodos.map((todo) => {
+      const shouldBeCompleted =
+        todo.targetSessions > 0 &&
+        todo.completedSessions === todo.targetSessions;
+
+      if (shouldBeCompleted && !todo.completed) {
+        return { ...todo, completed: true };
+      }
+
+      if (!shouldBeCompleted && todo.completed) {
+        return { ...todo, completed: false };
+      }
+
+      return todo;
+    });
   }
 
   return {
@@ -217,6 +251,7 @@ const useTodo = (timerSetting: ITimerSetting): TodoHook => {
       editTodo,
       removeTodo,
       toggleTodoCompletion,
+      setTodoCompletion
     },
     todosHandlers: {
       changeViewType,

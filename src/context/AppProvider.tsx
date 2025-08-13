@@ -26,7 +26,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const setting = useSetting();
   const timer = useTimer(setting.timerSetting, setting.soundSetting, handleTimerEnd);
   const session = useSession();
-  const todo = useTodo(setting.timerSetting);
+  const todo = useTodo(setting.timerSetting, setting.taskSetting);
 
   function handleTimerEnd() {
     if (timer.mode === TimerModeEnum.POMODORO) {
