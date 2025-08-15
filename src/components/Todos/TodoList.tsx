@@ -7,15 +7,28 @@ interface TodoListProps {
   todoHandlers: ITodoHandlers;
 }
 
-export const TodoList = ({ todos, activeTodoId, todoHandlers }: TodoListProps) => (
-  <ol className="grid gap-3">
-    {todos.map((todoItem) => (
-      <Todo
-        key={todoItem.id}
-        todo={todoItem}
-        isActive={todoItem.id === activeTodoId}
-        todoHandlers={todoHandlers}
-      />
-    ))}
-  </ol>
-);
+export const TodoList = ({ todos, activeTodoId, todoHandlers }: TodoListProps) => {
+  const completedTodos = todos.filter(todo => todo.completed);
+  const incompleteTodos = todos.filter(todo => !todo.completed);
+
+  return (
+    <ol className="grid gap-3">
+      {incompleteTodos.map((todoItem) => (
+        <Todo
+          key={todoItem.id}
+          todo={todoItem}
+          isActive={todoItem.id === activeTodoId}
+          todoHandlers={todoHandlers}
+        />
+      ))}
+      {completedTodos.map((todoItem) => (
+        <Todo
+          key={todoItem.id}
+          todo={todoItem}
+          isActive={todoItem.id === activeTodoId}
+          todoHandlers={todoHandlers}
+        />
+      ))}
+    </ol>
+  );
+};

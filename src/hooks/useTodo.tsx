@@ -131,7 +131,7 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
 
     setTodos(newTodos);
     // get the first not completed todo
-    const selectedTodo = todos.find(todo => !todo.completed);
+    const selectedTodo = newTodos.find(todo => !todo.completed);
     if (selectedTodo) {
       setSelectedTodoId(selectedTodo.id);
     }
@@ -166,6 +166,7 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
       };
     });
 
+    // update selected todo
     const selectedTodo = updatedTodos.find(todo => !todo.completed);
     if (selectedTodo) {
       setSelectedTodoId(selectedTodo.id);
@@ -245,7 +246,6 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
   function applyAutoSwitch(updatedTodos: ITodo[]) {
     if (!taskSetting.autoSwitchTasks) return updatedTodos;
 
-    // [] make sure that applyAutoSwitch works with applyAutoCheck
     let selectedTodo = updatedTodos.find((todo) => todo.id === selectedTodoId);
     if (selectedTodo && selectedTodo.completed) {
       selectedTodo = updatedTodos.find(todo => !todo.completed);
