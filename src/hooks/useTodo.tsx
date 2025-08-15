@@ -130,7 +130,11 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
     ];
 
     setTodos(newTodos);
-    setSelectedTodoId(newTodoId);
+    // get the first not completed todo
+    const selectedTodo = todos.find(todo => !todo.completed);
+    if (selectedTodo) {
+      setSelectedTodoId(selectedTodo.id);
+    }
   }
 
   function editTodo(id: string, formData: ITodoForm) {
@@ -143,13 +147,13 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
       };
     });
 
-    setTodos(applyAutoCheck(updatedTodos));
+    setTodos(applyAutoSwitch(applyAutoCheck(updatedTodos)));
   }
 
   function removeTodo(id: string) {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
 
-    setTodos(updatedTodos);
+    setTodos(applyAutoSwitch(updatedTodos));
   }
 
   function toggleTodoCompletion(id: string) {
@@ -161,6 +165,11 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
         completed: !todo.completed,
       };
     });
+
+    const selectedTodo = updatedTodos.find(todo => !todo.completed);
+    if (selectedTodo) {
+      setSelectedTodoId(selectedTodo.id);
+    }
 
     setTodos(updatedTodos);
   }
@@ -175,7 +184,7 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
       };
     });
 
-    setTodos(updatedTodos);
+    setTodos(applyAutoSwitch(updatedTodos));
   }
 
   function changeViewType(viewType: TodosViewTypeEnum) {
@@ -190,7 +199,7 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
       return todo;
     });
 
-    setTodos(resetTodos);
+    setTodos(applyAutoSwitch(resetTodos));
   }
 
   function clearAllTodos() {
@@ -199,7 +208,7 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
 
   function clearCompletedTodos() {
     const incompleteTodos = todos.filter((todo) => !todo.completed);
-    setTodos(incompleteTodos);
+    setTodos(applyAutoSwitch(incompleteTodos));
   }
 
   function incrementSession() {
@@ -210,7 +219,7 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
       return todo;
     });
 
-    setTodos(applyAutoCheck(updatedTodos));
+    setTodos(applyAutoSwitch(applyAutoCheck(updatedTodos)));
   }
 
   function applyAutoCheck(updatedTodos: ITodo[]) {
@@ -231,6 +240,21 @@ const useTodo = (timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHo
 
       return todo;
     });
+  }
+
+  function applyAutoSwitch(updatedTodos: ITodo[]) {
+    if (!taskSetting.autoSwitchTasks) return updatedTodos;
+
+    // [] make sure that applyAutoSwitch works with applyAutoCheck
+    let selectedTodo = updatedTodos.find((todo) => todo.id === selectedTodoId);
+    if (selectedTodo && selectedTodo.completed) {
+      selectedTodo = updatedTodos.find(todo => !todo.completed);
+      if (selectedTodo) {
+        setSelectedTodoId(selectedTodo.id);
+      }
+    }
+
+    return updatedTodos;
   }
 
   return {
