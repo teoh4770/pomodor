@@ -1,12 +1,12 @@
 import {
   AlarmSoundEnum,
-  ThemeEnum,
-  TickingSoundEnum,
-  TimerModeEnum,
-  ITimerSetting,
   ISoundSetting,
   ITaskSetting,
   IThemeSettings,
+  ITimerSetting,
+  ThemeEnum,
+  TickingSoundEnum,
+  TimerModeEnum
 } from "@/types";
 
 import { useLocalStorage } from "usehooks-ts";

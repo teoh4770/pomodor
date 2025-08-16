@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
-import { ThemeEnum, TimerModeEnum } from "@/types";
+import { TimerModeEnum } from "@/types";
 import { playAlarmSound } from "@/services/soundService";
 import { formatTime, playSound } from "@/utils";
 import { showToast } from "@/common/components/Toast";
@@ -16,9 +16,6 @@ export interface TimerHook {
   handlePomodoroMode: () => void;
   handleBreakMode: () => void;
 }
-
-// autoStartPomodoros: when break finish, start pomodoro
-// autoStartBreaks: when pomodoro finish, start break
 
 const useTimer = (
   setting: SettingHook,
@@ -142,29 +139,6 @@ const useTimer = (
 
     return stopTimer;
   }, [handleNextMode, isTimerRunning, isTimerEnd]);
-
-  // Mode switching
-  useEffect(() => {
-    // we can abstract this into a color service?
-    const themeColors = {
-      [ThemeEnum.RED]: "var(--bg-color-1)",
-      [ThemeEnum.GREEN]: "var(--bg-color-2)",
-      [ThemeEnum.BLUE]: "var(--bg-color-3)",
-      [ThemeEnum.BROWN]: "var(--bg-color-4)",
-      [ThemeEnum.PURPLE]: "var(--bg-color-5)"
-    };
-
-    let themeColor = null;
-    if (mode === TimerModeEnum.POMODORO) {
-      themeColor = themeColors[setting.themeSetting.themes.pomodoro];
-    } else if (mode === TimerModeEnum.BREAK) {
-      themeColor = themeColors[setting.themeSetting.themes.break];
-    }
-
-    if (themeColor) {
-      document.documentElement.style.setProperty("--primary-color", themeColor);
-    }
-  }, [mode, setting.themeSetting.themes.break, setting.themeSetting.themes.pomodoro]);
 
   return {
     mode,

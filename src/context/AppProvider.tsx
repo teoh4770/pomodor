@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { useTimer, useSession, useTodo, useSetting } from "@/hooks";
+import { useTimer, useSession, useTodo, useSetting, useTheme } from "@/hooks";
 import { SessionHook } from "@/hooks/useSession";
 import { TimerHook } from "@/hooks/useTimer";
 import { TodoHook } from "@/hooks/useTodo";
@@ -28,6 +28,8 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const timer = useTimer(setting, handleTimerEnd);
   const session = useSession();
   const todo = useTodo(setting.timerSetting, setting.taskSetting);
+
+  useTheme(timer.mode, setting.themeSetting.themes);
 
   function handleTimerEnd() {
     if (timer.mode === TimerModeEnum.POMODORO) {
