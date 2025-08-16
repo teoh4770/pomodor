@@ -6,6 +6,7 @@ import { TaskSetting } from "./TaskSetting";
 import { SettingsFooter } from "./SettingsFooter";
 import { useSettingContext } from "@/context";
 import * as React from "react";
+import { ThemeSetting } from "@/components/Settings/ThemeSetting.tsx";
 
 type SettingProps = object;
 
@@ -26,6 +27,7 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
     const form = e.currentTarget as HTMLFormElement;
     const settingFormData = new FormData(form);
 
+
     // Update timer setting
     setting.timerSettingHandler(
       Number(settingFormData.get("pomodoro-duration")!),
@@ -45,6 +47,13 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
       Number(settingFormData.get('alarm-sound-volume')),
       Number(settingFormData.get('alarm-sound')),
     );
+
+    // Update theme setting
+    setting.themeSettingHandlers.themeSettingHandler(
+      Boolean(settingFormData.get("dark-mode")),
+      Number(settingFormData.get("pomodoro-bg-color")),
+      Number(settingFormData.get("short-break-bg-color"))
+    );
   }
 
   return (
@@ -58,11 +67,11 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
         onChange={handleFormChange} 
         onSubmit={handleFormSubmit}
       >
-        {/* SettingsHeader gets the same ref so it can use to close the model */}
         <SettingsHeader dialogRef={ref as React.RefObject<HTMLDialogElement>} />
 
         <div className="px-5">
           <TimerSetting />
+          <ThemeSetting />
           <TaskSetting />
           <SoundSetting />
         </div>

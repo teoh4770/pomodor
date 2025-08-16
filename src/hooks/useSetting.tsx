@@ -41,6 +41,7 @@ export interface SettingHook {
   themeSetting: IThemeSettings;
   themeSettingHandlers: {
     toggleDarkMode: () => void;
+    themeSettingHandler: (darkMode: boolean, pomodoroColor: ThemeEnum, shortBreakColor: ThemeEnum) => void;
   };
 }
 
@@ -59,7 +60,6 @@ const useSetting = (): SettingHook => {
     autoStartBreak: boolean,
     autoStartPomodoros: boolean,
   ) => {
-    console.log(timerSetting)
     setTimerSetting({
       ...timerSetting,
       pomodoroDuration: pomodoroDuration,
@@ -148,6 +148,16 @@ const useSetting = (): SettingHook => {
     });
   };
 
+  const themeSettingHandler = (darkMode: boolean, pomodoroColor: ThemeEnum, shortBreakColor: ThemeEnum) => {
+    setThemeSetting({
+      darkModeWhenRunning: darkMode,
+      themes: {
+        [TimerModeEnum.POMODORO]: pomodoroColor,
+        [TimerModeEnum.BREAK]: shortBreakColor
+      }
+    });
+  };
+
   return {
     timerSetting,
     timerSettingHandler,
@@ -167,6 +177,7 @@ const useSetting = (): SettingHook => {
     themeSetting,
     themeSettingHandlers: {
       toggleDarkMode,
+      themeSettingHandler
     },
   };
 };

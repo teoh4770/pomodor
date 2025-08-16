@@ -3,10 +3,14 @@
   --_red: rgb(186 73 73);
   --_teal: rgb(56 133 138);
   --_blue: rgb(57 112 151);
+  --_brown: rgb(150 111 51);
+  --_purple: rgb(123 80 160);
 
   --bg-color-1: var(--_red);
   --bg-color-2: var(--_teal);
   --bg-color-3: var(--_blue);
+  --bg-color-4: var(--_brown);
+  --bg-color-5: var(--_purple);
 
   --primary-color: var(--bg-color-1);
 

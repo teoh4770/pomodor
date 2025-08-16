@@ -5,6 +5,7 @@ import { TimerHook } from "@/hooks/useTimer";
 import { TodoHook } from "@/hooks/useTodo";
 import { SettingHook } from "@/hooks/useSetting";
 import { TimerModeEnum } from "@/types";
+import * as React from "react";
 
 interface IAppContext {
   timer: TimerHook | undefined;
@@ -24,7 +25,7 @@ const AppContext = createContext<IAppContext>({
 // Create AppProvider to provide hooks to the consumers
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const setting = useSetting();
-  const timer = useTimer(setting.timerSetting, setting.soundSetting, handleTimerEnd);
+  const timer = useTimer(setting, handleTimerEnd);
   const session = useSession();
   const todo = useTodo(setting.timerSetting, setting.taskSetting);
 

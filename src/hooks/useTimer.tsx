@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import ClickSound from "/sounds/click/modern.mp3";
-import { ISoundSetting, ITimerSetting, TimerModeEnum } from "@/types";
+import { ThemeEnum, TimerModeEnum } from "@/types";
 import { playAlarmSound } from "@/services/soundService";
 import { formatTime, playSound } from "@/utils";
 import { showToast } from "@/common/components/Toast";
 import { useLocalStorage } from "usehooks-ts";
+import { SettingHook } from "@/hooks/useSetting.tsx";
 
 export interface TimerHook {
   mode: TimerModeEnum;
@@ -20,8 +21,7 @@ export interface TimerHook {
 // autoStartBreaks: when pomodoro finish, start break
 
 const useTimer = (
-  timerSetting: ITimerSetting,
-  soundSetting: ISoundSetting,
+  setting: SettingHook,
   onTimerEnd?: () => void,
 ): TimerHook => {
   // States
@@ -32,8 +32,8 @@ const useTimer = (
   // Derived variables
   const MINUTE = 60;
   const timerConfig = {
-    [TimerModeEnum.POMODORO]: timerSetting.pomodoroDuration * MINUTE,
-    [TimerModeEnum.BREAK]: timerSetting.breakDuration * MINUTE,
+    [TimerModeEnum.POMODORO]: setting.timerSetting.pomodoroDuration * MINUTE,
+    [TimerModeEnum.BREAK]: setting.timerSetting.breakDuration * MINUTE
   };
   const interval = timerConfig[mode];
   const remainingTime = interval - elapsedTime;
@@ -64,7 +64,7 @@ const useTimer = (
     }
 
     function notifyUser() {
-      playAlarmSound(soundSetting.alarmSoundType, soundSetting.alarmSoundVolume);
+      playAlarmSound(setting.soundSetting.alarmSoundType, setting.soundSetting.alarmSoundVolume);
       showToast("You have finish a session!", "success");
     }
 
@@ -74,15 +74,15 @@ const useTimer = (
 
     function shouldAutoStart(nextMode: TimerModeEnum) {
       return (
-        (timerSetting.autoStartBreak && nextMode === TimerModeEnum.BREAK) ||
-        (timerSetting.autoStartPomodoros && nextMode === TimerModeEnum.POMODORO)
+        (setting.timerSetting.autoStartBreak && nextMode === TimerModeEnum.BREAK) ||
+        (setting.timerSetting.autoStartPomodoros && nextMode === TimerModeEnum.POMODORO)
       );
     }
   }, [
     mode,
     onTimerEnd,
-    timerSetting.autoStartBreak,
-    timerSetting.autoStartPomodoros,
+    setting.timerSetting.autoStartBreak,
+    setting.timerSetting.autoStartPomodoros
   ]);
 
   const handlePomodoroMode = () => {
@@ -142,6 +142,29 @@ const useTimer = (
 
     return stopTimer;
   }, [handleNextMode, isTimerRunning, isTimerEnd]);
+
+  // Mode switching
+  useEffect(() => {
+    // we can abstract this into a color service?
+    const themeColors = {
+      [ThemeEnum.RED]: "var(--bg-color-1)",
+      [ThemeEnum.GREEN]: "var(--bg-color-2)",
+      [ThemeEnum.BLUE]: "var(--bg-color-3)",
+      [ThemeEnum.BROWN]: "var(--bg-color-4)",
+      [ThemeEnum.PURPLE]: "var(--bg-color-5)"
+    };
+
+    let themeColor = null;
+    if (mode === TimerModeEnum.POMODORO) {
+      themeColor = themeColors[setting.themeSetting.themes.pomodoro];
+    } else if (mode === TimerModeEnum.BREAK) {
+      themeColor = themeColors[setting.themeSetting.themes.break];
+    }
+
+    if (themeColor) {
+      document.documentElement.style.setProperty("--primary-color", themeColor);
+    }
+  }, [mode, setting.themeSetting.themes.break, setting.themeSetting.themes.pomodoro]);
 
   return {
     mode,
