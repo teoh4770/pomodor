@@ -1,4 +1,4 @@
-import { db } from "../../firebase.ts";
+import { db } from "./firebase.ts";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ISoundSetting, ITaskSetting, IThemeSettings, ITodo, TodosViewTypeEnum } from "@/types";
 

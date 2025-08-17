@@ -1,4 +1,4 @@
-import { auth } from "../../firebase.ts";
+import { auth } from "./firebase.ts";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { DatabaseAdapter } from "@/services/StorageAdapterService.ts";
 import { AlarmSoundEnum, TickingSoundEnum, TodosViewTypeEnum } from "@/types";
