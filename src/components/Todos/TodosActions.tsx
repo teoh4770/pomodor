@@ -14,10 +14,8 @@ const TodosActions = ({ todosHandlers }: TodosActionsProps) => {
           className="button"
           data-type="secondary"
           data-size="sm"
-          // data-active={selectedAction === TodosActionsEnum.RESET}
           onClick={() => {
             todosHandlers.resetTodos();
-            // setSelectedAction(TodosActionsEnum.RESET);
           }}
         >
           Reset All
@@ -27,10 +25,8 @@ const TodosActions = ({ todosHandlers }: TodosActionsProps) => {
           className="button"
           data-type="secondary"
           data-size="sm"
-          // data-active={selectedAction === TodosActionsEnum.CLEAR_ALL}
           onClick={() => {
             todosHandlers.clearAllTodos();
-            // setSelectedAction(TodosActionsEnum.CLEAR_ALL);
           }}
         >
           Clear All
@@ -40,10 +36,8 @@ const TodosActions = ({ todosHandlers }: TodosActionsProps) => {
           className="button"
           data-type="secondary"
           data-size="sm"
-          // data-active={selectedAction === TodosActionsEnum.CLEAR_COMPLETED}
           onClick={() => {
             todosHandlers.clearCompletedTodos();
-            // setSelectedAction(TodosActionsEnum.CLEAR_COMPLETED);
           }}
         >
           Clear Completed
