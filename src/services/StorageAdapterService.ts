@@ -1,6 +1,14 @@
 import { db } from "./firebase.ts";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { ISoundSetting, ITaskSetting, IThemeSettings, ITodo, TodosViewTypeEnum } from "@/types";
+import {
+  ISoundSetting,
+  ITaskSetting,
+  IThemeSettings,
+  ITimerSetting,
+  ITodo,
+  TimerModeEnum,
+  TodosViewTypeEnum
+} from "@/types";
 
 export interface UserData {
   currentViewType: TodosViewTypeEnum,
@@ -11,6 +19,8 @@ export interface UserData {
   soundSetting: ISoundSetting,
   taskSetting: ITaskSetting,
   themeSetting: IThemeSettings,
+  timerSetting: ITimerSetting,
+  timerMode: TimerModeEnum,
   todos: ITodo[],
 }
 

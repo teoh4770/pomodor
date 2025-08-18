@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks/useAuth.tsx";
+import { useAuth } from "@/hooks";
 import { login, registerAndInitData, logout } from "@/services/authService.ts";
 
 export const Auth = () => {
