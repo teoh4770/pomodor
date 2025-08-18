@@ -41,9 +41,20 @@ function useSettingContext() {
   return setting;
 }
 
+function useAuthContext() {
+  const { user } = useContext(AppContext);
+
+  if (user === undefined) {
+    throw new Error("useAuthContext must be used with an AppContext");
+  }
+
+  return user;
+}
+
 export {
   useTodoContext,
   useSessionContext,
   useTimerContext,
   useSettingContext,
+  useAuthContext
 };

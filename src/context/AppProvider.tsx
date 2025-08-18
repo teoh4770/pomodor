@@ -1,17 +1,19 @@
 import { createContext } from "react";
-import { useTimer, useSession, useTodo, useSetting, useTheme } from "@/hooks";
+import { useTimer, useSession, useTodo, useSetting, useTheme, useAuth } from "@/hooks";
 import { SessionHook } from "@/hooks/useSession";
 import { TimerHook } from "@/hooks/useTimer";
 import { TodoHook } from "@/hooks/useTodo";
 import { SettingHook } from "@/hooks/useSetting";
 import { TimerModeEnum } from "@/types";
 import * as React from "react";
+import { User } from "firebase/auth";
 
 interface IAppContext {
   timer: TimerHook | undefined;
   session: SessionHook | undefined;
   todo: TodoHook | undefined;
   setting: SettingHook | undefined;
+  user: User | null;
 }
 
 // Create app context with default value
@@ -20,14 +22,16 @@ const AppContext = createContext<IAppContext>({
   session: undefined,
   todo: undefined,
   setting: undefined,
+  user: null
 });
 
 // Create AppProvider to provide hooks to the consumers
 const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const setting = useSetting();
+  const user = useAuth();
   const timer = useTimer(setting, handleTimerEnd);
   const session = useSession();
-  const todo = useTodo(setting.timerSetting, setting.taskSetting);
+  const todo = useTodo(user, setting.timerSetting, setting.taskSetting);
 
   useTheme(timer.mode, setting.themeSetting.themes);
 
@@ -39,7 +43,7 @@ const AppProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AppContext.Provider value={{ timer, session, todo, setting }}>
+    <AppContext.Provider value={{ timer, session, todo, setting, user }}>
       {children}
     </AppContext.Provider>
   );
