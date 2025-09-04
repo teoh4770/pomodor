@@ -22,4 +22,4 @@ const ResetIcon = () => {
   );
 };
 
-export { ResetIcon }
+export { ResetIcon };

@@ -1,4 +1,4 @@
-import { TimerModeEnum, TodosViewTypeEnum, AlarmSoundEnum, ThemeEnum, TickingSoundEnum } from "@/types";
+import { AlarmSoundEnum, ThemeEnum, TickingSoundEnum, TimerModeEnum, TodosViewTypeEnum } from "@/types";
 
 interface ITodo {
   id: string;
@@ -61,5 +61,5 @@ export type {
   ITimerSetting,
   ISoundSetting,
   ITaskSetting,
-  IThemeSettings,
+  IThemeSettings
 };

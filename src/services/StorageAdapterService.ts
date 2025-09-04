@@ -11,17 +11,17 @@ import {
 } from "@/types";
 
 export interface UserData {
-  currentViewType: TodosViewTypeEnum,
-  elapsedTime: number,
-  isTimerRunning: boolean,
-  selectedTodoId: string,
-  sessionCount: number,
-  soundSetting: ISoundSetting,
-  taskSetting: ITaskSetting,
-  themeSetting: IThemeSettings,
-  timerSetting: ITimerSetting,
-  timerMode: TimerModeEnum,
-  todos: ITodo[],
+  currentViewType: TodosViewTypeEnum;
+  elapsedTime: number;
+  isTimerRunning: boolean;
+  selectedTodoId: string;
+  sessionCount: number;
+  soundSetting: ISoundSetting;
+  taskSetting: ITaskSetting;
+  themeSetting: IThemeSettings;
+  timerSetting: ITimerSetting;
+  timerMode: TimerModeEnum;
+  todos: ITodo[];
 }
 
 interface StorageAdapter {

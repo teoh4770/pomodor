@@ -4,7 +4,7 @@ interface SettingsHeaderProps {
   dialogRef: React.RefObject<HTMLDialogElement>;
 }
 
-const SettingsHeader = ({dialogRef}: SettingsHeaderProps) => {
+const SettingsHeader = ({ dialogRef }: SettingsHeaderProps) => {
   return (
     <div className="flex items-center justify-between border-b border-solid px-5 py-3">
       <div></div>
@@ -15,7 +15,7 @@ const SettingsHeader = ({dialogRef}: SettingsHeaderProps) => {
         aria-label="Close button"
         onClick={() => {
           if (dialogRef.current) {
-            dialogRef.current.close()
+            dialogRef.current.close();
           }
         }}
       >

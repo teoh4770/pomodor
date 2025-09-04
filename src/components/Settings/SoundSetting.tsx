@@ -11,9 +11,16 @@ const SoundSetting = () => {
       </h3>
 
       <div>
-        <label className="flex items-center justify-between" htmlFor="alarm-sound">
+        <label
+          className="flex items-center justify-between"
+          htmlFor="alarm-sound"
+        >
           <span>Alarm Sound</span>
-          <select name="alarm-sound" id="alarm-sound" defaultValue={soundSetting.alarmSoundType}>
+          <select
+            name="alarm-sound"
+            id="alarm-sound"
+            defaultValue={soundSetting.alarmSoundType}
+          >
             {alarmSoundOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -21,13 +28,26 @@ const SoundSetting = () => {
             ))}
           </select>
         </label>
-        <label className="flex items-center justify-between" htmlFor="alarm-sound-volume">
+        <label
+          className="flex items-center justify-between"
+          htmlFor="alarm-sound-volume"
+        >
           <span className="invisible">Volume</span>
           <div>
             <span>{soundSetting.alarmSoundVolume}</span>
-            <input type="range" name="alarm-sound-volume" id="alarm-sound-volume" min={0} max={100}
-                   onChange={(e) => soundSettingHandlers.setAlarmSoundVolume(Number(e.currentTarget.value))}
-                   value={soundSetting.alarmSoundVolume} />
+            <input
+              type="range"
+              name="alarm-sound-volume"
+              id="alarm-sound-volume"
+              min={0}
+              max={100}
+              onChange={(e) =>
+                soundSettingHandlers.setAlarmSoundVolume(
+                  Number(e.currentTarget.value)
+                )
+              }
+              value={soundSetting.alarmSoundVolume}
+            />
           </div>
         </label>
       </div>

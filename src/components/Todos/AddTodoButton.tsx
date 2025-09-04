@@ -2,7 +2,7 @@ interface AddTodoButtonProps {
   onClick: () => void;
 }
 
-const AddTodoButton = ({onClick}: AddTodoButtonProps) => (
+const AddTodoButton = ({ onClick }: AddTodoButtonProps) => (
   <button
     type="button"
     className="button w-full border-2 border-dashed !bg-black/10 !py-4 font-bold !text-white/80 hover:!text-white"
@@ -16,4 +16,4 @@ const AddTodoButton = ({onClick}: AddTodoButtonProps) => (
   </button>
 );
 
-export { AddTodoButton }
+export { AddTodoButton };

@@ -1,6 +1,5 @@
 import { useTodoContext } from "@/context";
 import { formatTime } from "@/utils";
-import { useMemo } from "react";
 
 const Summary = () => {
   const {
@@ -8,11 +7,11 @@ const Summary = () => {
     totalPomodoroSessions,
     completedPomodoroSessions,
     totalRemainingTimeInMinutes,
-    getFinishedTime,
+    estimatedFinishTime
   } = useTodoContext();
 
-  const { hours, minutes } = useMemo(() => getFinishedTime(), [getFinishedTime]);
-  
+  const { hours, minutes } = estimatedFinishTime;
+
   const remainingHours = (totalRemainingTimeInMinutes / 60).toFixed(1);
 
   return (
@@ -38,9 +37,7 @@ const Summary = () => {
             <span className="text-2xl font-bold">
               {formatTime(hours)}:{formatTime(minutes)}
             </span>
-            <span className="text-sm text-white/70">
-              ({remainingHours}h)
-            </span>
+            <span className="text-sm text-white/70">({remainingHours}h)</span>
           </p>
         </div>
       ) : (

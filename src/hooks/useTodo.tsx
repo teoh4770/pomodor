@@ -8,9 +8,9 @@ import {
   TodosViewTypeEnum
 } from "@/types";
 import { useLocalStorage } from "usehooks-ts";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/services/firebase.ts";
 import { User } from "firebase/auth";
 
@@ -24,131 +24,154 @@ export interface TodoHook {
   totalPomodoroSessions: number;
   completedPomodoroSessions: number;
   totalRemainingTimeInMinutes: number;
-  getFinishedTime: () => {
-    hours: number,
-    minutes: number
-  }
+  estimatedFinishTime: {
+    hours: number;
+    minutes: number;
+  };
   incrementSession: () => void;
   todoHandlers: ITodoHandlers;
   todosHandlers: ITodosHandlers;
 }
 
-const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: ITaskSetting): TodoHook => {
+const useTodo = (
+  user: User | null,
+  timerSetting: ITimerSetting,
+  taskSetting: ITaskSetting
+): TodoHook => {
+  // Log-in user state
   const userDocRef = useMemo(() => {
     if (user) {
       return doc(db, "users", user.uid);
     }
     return null;
   }, [user]);
+  // Add a state to track if we are done with initial hydration for a logged-in user
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // States with default values for logged-out users
   const [todos, setTodos] = useLocalStorage<ITodo[]>("todos", []);
-  const [selectedTodoId, setSelectedTodoId] = useLocalStorage('selected-todo-id', '');
-  const [currentViewType, setCurrentViewType] = useLocalStorage<TodosViewTypeEnum>(
-    'current-view-type',
-    TodosViewTypeEnum.ALL,
+  const [selectedTodoId, setSelectedTodoId] = useLocalStorage(
+    "selected-todo-id",
+    ""
   );
+  const [currentViewType, setCurrentViewType] =
+    useLocalStorage<TodosViewTypeEnum>(
+      "current-view-type",
+      TodosViewTypeEnum.ALL
+    );
 
-  const getTodos = async () => {
-    if (!userDocRef) return;
-
-    const docSnap = await getDoc(userDocRef);
-
-    if (docSnap.exists()) {
-      setTodos(docSnap.data().todos);
-    } else {
-      console.log("No such document!");
-    }
-  };
-
-  const getSelectedTodoId = async () => {
-    if (!userDocRef) return;
-
-    const docSnap = await getDoc(userDocRef);
-
-    if (docSnap.exists()) {
-      setSelectedTodoId(docSnap.data().selectedTodoId);
-    } else {
-      console.log("No such document!");
-    }
-  };
-
-  const getCurrentViewType = async () => {
-    if (!userDocRef) return;
-
-    const docSnap = await getDoc(userDocRef);
-
-    if (docSnap.exists()) {
-      setCurrentViewType(docSnap.data().currentViewType);
-    } else {
-      console.log("No such document!");
-    }
-  };
-
+  // Hydrate local todo state from Firestore when the user changes.
   useEffect(() => {
-    getTodos();
-    getSelectedTodoId();
-    getCurrentViewType();
-  }, [user]);
+    async function hydrateTodoState() {
+      if (!userDocRef) {
+        setIsHydrated(false); // Reset when user logs out
+        return;
+      }
+
+      const user = await getDoc(userDocRef);
+
+      if (user && user.exists()) {
+        const data = user.data();
+        setTodos(data.todos);
+        setSelectedTodoId(data.selectedTodoId);
+        setCurrentViewType(data.currentViewType);
+      }
+      setIsHydrated(true); // Mark hydration as complete
+    }
+
+    hydrateTodoState();
+  }, [user, userDocRef]);
+
+  // Persistence logic in one place: Watches for changes in the local state (todos, selectedTodoId, currentViewType) and persists those changes to Firestore automatically.
+  useEffect(() => {
+    function persistUserData(value: Partial<TodoHook>) {
+      if (userDocRef) {
+        setDoc(userDocRef, value, { merge: true });
+      }
+    }
+
+    if (!userDocRef || !isHydrated) return;
+
+    const stateToPersist = {
+      todos,
+      selectedTodoId,
+      currentViewType
+    };
+
+    persistUserData(stateToPersist);
+  }, [currentViewType, selectedTodoId, todos, userDocRef]);
+
 
   // Derived variables
-  const selectedTodo = todos.find((todo) => todo.id === selectedTodoId) || null;
-
-  // Categorize todos based on view type
-  const todosViews: Record<TodosViewTypeEnum, ITodo[]> = {
-    [TodosViewTypeEnum.ALL]: todos,
-    [TodosViewTypeEnum.COMPLETED]: todos.filter((todo) => todo.completed),
-    [TodosViewTypeEnum.ACTIVE]: todos.filter((todo) => !todo.completed),
-  };
-  const visibleTodos = todosViews[currentViewType];
-
-  // Check if all todos are completed
-  const allTodosCompleted =
-    todos.length > 0 && todos.every((todo) => todo.completed);
-
-  // Calculate sessions
-  const totalPomodoroSessions = todos.reduce(
-    (acc, todo) => acc + todo.targetSessions,
-    0,
+  const selectedTodo = useMemo(
+    () => todos.find((todo) => todo.id === selectedTodoId) || null,
+    [todos, selectedTodoId]
   );
-  const completedPomodoroSessions = todos.reduce(
-    (acc, todo) => todo.completed ? acc : acc + todo.completedSessions,
-    0,
-  )
-  const incompletePomodoroSessions = totalPomodoroSessions - completedPomodoroSessions;
 
-  // Calculate the total remaining time (in minutes) needed to complete all remaining pomodoro sessions
-  // Formula: (remainingPomodoroCount * pomodoroDuration) + (breakCount * breakDuration)
-  const totalRemainingTimeInMinutes = incompletePomodoroSessions * timerSetting.pomodoroDuration + incompletePomodoroSessions * timerSetting.breakDuration;
+  const visibleTodos = useMemo(() => {
+    const todosViews: Record<TodosViewTypeEnum, ITodo[]> = {
+      [TodosViewTypeEnum.ALL]: todos,
+      [TodosViewTypeEnum.COMPLETED]: todos.filter((todo) => todo.completed),
+      [TodosViewTypeEnum.ACTIVE]: todos.filter((todo) => !todo.completed)
+    };
 
-  // Calculates the estimated finishing time based on the total remaining time
-  const getFinishedTime = () => {
+    return todosViews[currentViewType];
+  }, [currentViewType, todos]);
+
+  const {
+    allTodosCompleted,
+    totalPomodoroSessions,
+    completedPomodoroSessions,
+    totalRemainingTimeInMinutes,
+    estimatedFinishTime
+  } = useMemo(() => {
+    const allCompleted =
+      todos.length > 0 && todos.every((todo) => todo.completed);
+
+    const totalSessions = todos.reduce(
+      (acc, todo) => acc + todo.targetSessions,
+      0
+    );
+
+    const completedSessions = todos.reduce(
+      (acc, todo) => (todo.completed ? acc : acc + todo.completedSessions),
+      0
+    );
+
+    const incompleteSessions = totalSessions - completedSessions;
+
+    const totalRemainingTimeInMinutes =
+      incompleteSessions * timerSetting.pomodoroDuration +
+      incompleteSessions * timerSetting.breakDuration;
+
     const date = new Date();
     date.setTime(date.getTime() + totalRemainingTimeInMinutes * 60_000);
-
-    return {
+    const finishTime = {
       hours: date.getHours(),
       minutes: date.getMinutes()
-    }
-  }
+    };
 
-  /******************/
-  /* Todos Handlers */
-  /******************/
+    return {
+      allTodosCompleted: allCompleted,
+      totalPomodoroSessions: totalSessions,
+      completedPomodoroSessions: completedSessions,
+      totalRemainingTimeInMinutes: totalRemainingTimeInMinutes,
+      estimatedFinishTime: finishTime
+    };
+  }, [todos, timerSetting]);
+
+  // Todo handlers
+
+
   function selectTodo(todoId: string) {
     setSelectedTodoId(todoId);
-
-    if (userDocRef) {
-      setDoc(userDocRef, { selectedTodoId: todoId }, { merge: true });
-    }
   }
 
   function addTodo(formData: ITodoForm) {
-    const newTodoId = self.crypto.randomUUID();
     const newTodos: ITodo[] = [
       ...todos,
       {
-        id: newTodoId,
+        id: self.crypto.randomUUID(),
         title: formData.title.trim(),
         description: formData.description ? formData.description.trim() : "",
         completed: false,
@@ -156,18 +179,8 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
         completedSessions: 0
       }
     ];
-    const selectedTodo = newTodos.find(todo => !todo.completed);
+    const selectedTodo = newTodos.find((todo) => !todo.completed);
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: newTodos }, { merge: true });
-
-      if (selectedTodo) {
-        setDoc(userDocRef, { selectedTodoId: selectedTodo.id }, { merge: true });
-      }
-    }
-
-    // localstorage
     setTodos(newTodos);
     if (selectedTodo) {
       setSelectedTodoId(selectedTodo.id);
@@ -175,30 +188,29 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
   }
 
   function editTodo(id: string, formData: ITodoForm) {
-    const updatedTodos = todos.map((todo) => {
+    let updatedTodos = todos.map((todo) => {
       if (todo.id !== id) return todo;
       return { ...todo, ...formData };
     });
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: updatedTodos }, { merge: true });
-    }
+    updatedTodos = applyAutoCheck(updatedTodos);
+    const { todos: finalTodos, newSelectedId } = applyAutoSwitch(updatedTodos);
 
-    // localstorage
-    setTodos(applyAutoSwitch(applyAutoCheck(updatedTodos)));
+    setTodos(finalTodos);
+    if (newSelectedId) {
+      setSelectedTodoId(newSelectedId);
+    }
   }
 
   function removeTodo(id: string) {
     const updatedTodos = todos.filter((todo) => todo.id !== id);
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: updatedTodos }, { merge: true });
-    }
+    const { todos: finalTodos, newSelectedId } = applyAutoSwitch(updatedTodos);
 
-    // localstorage
-    setTodos(applyAutoSwitch(updatedTodos));
+    setTodos(finalTodos);
+    if (newSelectedId) {
+      setSelectedTodoId(newSelectedId);
+    }
   }
 
   function toggleTodoCompletion(id: string) {
@@ -206,32 +218,21 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
       if (todo.id !== id) return todo;
       return { ...todo, completed: !todo.completed };
     });
-    const selectedTodo = updatedTodos.find(todo => !todo.completed);
+    const selectedTodo = updatedTodos.find((todo) => !todo.completed);
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: updatedTodos }, { merge: true });
-
-      if (selectedTodo) {
-        setDoc(userDocRef, { selectedTodoId: selectedTodo.id }, { merge: true });
-      }
+    const updatesToPersist: Partial<TodoHook> = { todos: updatedTodos };
+    if (selectedTodo) {
+      updatesToPersist.selectedTodoId = selectedTodo.id;
     }
 
-    // localstorage
-    setTodos(updatedTodos);
 
+    setTodos(updatedTodos);
     if (selectedTodo) {
       setSelectedTodoId(selectedTodo.id);
     }
   }
 
   function changeViewType(viewType: TodosViewTypeEnum) {
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { currentViewType: viewType }, { merge: true });
-    }
-
-    // localstorage
     setCurrentViewType(viewType);
   }
 
@@ -242,52 +243,44 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
       return todo;
     });
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: resetTodos }, { merge: true });
-    }
+    const { todos: finalTodos, newSelectedId } = applyAutoSwitch(resetTodos);
 
-    // localstorage
-    setTodos(applyAutoSwitch(resetTodos));
+    setTodos(finalTodos);
+    if (newSelectedId) {
+      setSelectedTodoId(newSelectedId);
+    }
   }
 
   function clearAllTodos() {
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: [] }, { merge: true });
-    }
-
-    // localstorage
     setTodos([]);
   }
 
   function clearCompletedTodos() {
     const incompleteTodos = todos.filter((todo) => !todo.completed);
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: incompleteTodos }, { merge: true });
-    }
+    const { todos: finalTodos, newSelectedId } = applyAutoSwitch(incompleteTodos);
 
-    // localstorage
-    setTodos(applyAutoSwitch(incompleteTodos));
+    setTodos(finalTodos);
+    if (newSelectedId) {
+      setSelectedTodoId(newSelectedId);
+    }
   }
 
   function incrementSession() {
-    const updatedTodos = todos.map((todo) => {
+    let updatedTodos = todos.map((todo) => {
       if (todo.id === selectedTodoId) {
         todo.completedSessions += 1;
       }
       return todo;
     });
 
-    // firestore
-    if (userDocRef) {
-      setDoc(userDocRef, { todos: updatedTodos }, { merge: true });
-    }
+    updatedTodos = applyAutoCheck(updatedTodos);
+    const { todos: finalTodos, newSelectedId } = applyAutoSwitch(updatedTodos);
 
-    // localstorage
-    setTodos(applyAutoSwitch(applyAutoCheck(updatedTodos)));
+    setTodos(finalTodos);
+    if (newSelectedId) {
+      setSelectedTodoId(newSelectedId);
+    }
   }
 
   function applyAutoCheck(updatedTodos: ITodo[]) {
@@ -311,22 +304,18 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
   }
 
   function applyAutoSwitch(updatedTodos: ITodo[]) {
-    if (!taskSetting.autoSwitchTasks) return updatedTodos;
+    if (!taskSetting.autoSwitchTasks) return { todos: updatedTodos };
 
-    const isSelectedTodoCompleted = updatedTodos.find((todo) => todo.id === selectedTodoId)?.completed;
-    if (isSelectedTodoCompleted) {
-      const firstIncompleteTodo = updatedTodos.find(todo => !todo.completed);
-      if (firstIncompleteTodo) {
-        // firestore
-        if (userDocRef) {
-          setDoc(userDocRef, { selectedTodoId: firstIncompleteTodo.id }, { merge: true });
-        }
-        // localstorage
-        setSelectedTodoId(firstIncompleteTodo.id);
-      }
+    const isSelectedTodoComplete = updatedTodos.find(
+      (todo) => todo.id === selectedTodoId
+    )?.completed;
+    const incompleteTodo = updatedTodos.find((todo) => !todo.completed);
+
+    if (isSelectedTodoComplete && incompleteTodo) {
+      return { todos: updatedTodos, newSelectedId: incompleteTodo.id };
     }
 
-    return updatedTodos;
+    return { todos: updatedTodos };
   }
 
   return {
@@ -339,21 +328,21 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
     totalPomodoroSessions,
     completedPomodoroSessions,
     totalRemainingTimeInMinutes,
-    getFinishedTime,
+    estimatedFinishTime,
     incrementSession,
     todoHandlers: {
       selectTodo,
       addTodo,
       editTodo,
       removeTodo,
-      toggleTodoCompletion,
+      toggleTodoCompletion
     },
     todosHandlers: {
       changeViewType,
       resetTodos,
       clearAllTodos,
-      clearCompletedTodos,
-    },
+      clearCompletedTodos
+    }
   };
 };
 

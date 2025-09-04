@@ -19,23 +19,37 @@ Basic Pomodoro Timer Checklist:
   - [X] Improve Edit View 
   - [X] Complete single todo
   - [X] Add note to a single todo
-  - [ ] Handle todo edit form validation to ensure that the fields are valid.
-  - [ ] Set priority of todo
-  - [ ] Celebrate banner when all the todos are complete
-  - [ ] Remove all todos
-  - [ ] Remove all completed todos
-  - [ ] Reset all todos' completed status and Pomodoro sessions
-  - [ ] Have completed, non-completed, and all todo list views
-  - [ ] Create settings pop-up
-      - [ ] Change username
-      - [ ] Alarm sounds
-      - [ ] Color themes
-      - [ ] Background sounds
-      - [ ] Update focus/break time
-  - [ ] Save user data (todos, settings, Pomodoro sessions)
-      - [ ] Save user data in the database
-      - [ ] Retrieve user data on login
-
+  - [X] Handle todo edit form validation to ensure that the fields are valid.
+  - [X] Set priority of todo
+  - [X] Celebrate banner when all the todos are complete
+  - [X] Remove all todos
+  - [X] Remove all completed todos
+  - [X] Reset all todos' completed status and Pomodoro sessions
+  - [X] Have completed, non-completed, and all todo list views
+  - [X] Save user data (todos, settings, Pomodoro sessions) @Aug 7
+      - [X] Save Todos
+      - [X] Save Pomodoro Sessions
+      - [X] Save Settings
+        - [X] Timer
+        - [X] Sound
+        - [X] Task
+  - [X] Implement task and sound setting real quick in setting
+  - [X] Implement the setting properties
+    - [X] Timer
+    - [X] Sound
+    - [X] Task
+        - [X] auto check task (when the number of task session matched the target task sessions, auto check it)
+        - [X] auto switch tasks (if the todo checked, select the next todo to be focused)
+            - task checked -> look for the first task that's unchecked -> focus on it
+  - [X] Move the completed todos to the bottom on the UI side
+  - [X] Create settings pop-up
+      - [X] Alarm sounds
+      - [X] Color themes
+      - [X] Update focus/break time
+   - [X] Authentication
+        - [X] Save user data in the database
+        - [X] Retrieve user data on login
+   - [] Need to update the summary logic so that when the todo is checked, it does not include the pomodoro session time anymore
 Advanced Pomodoro Timer Checklist:
   - [ ] Create and manage projects (a project contains related tasks)
   - [ ] Remove project

@@ -17,12 +17,15 @@ export interface SettingHook {
     pomodoroDuration: number,
     breakDuration: number,
     autoStartBreak: boolean,
-    autoStartPomodoros: boolean,
+    autoStartPomodoros: boolean
   ) => void;
 
   soundSetting: ISoundSetting;
   soundSettingHandlers: {
-    soundSettingHandler: (alarmSoundVolume: number, alarmSoundType: AlarmSoundEnum) => void;
+    soundSettingHandler: (
+      alarmSoundVolume: number,
+      alarmSoundType: AlarmSoundEnum
+    ) => void;
     setAlarmSoundVolume: (volume: number) => void;
     setAlarmSoundType: (soundType: AlarmSoundEnum) => void;
     setTickingSoundType: (soundType: TickingSoundEnum) => void;
@@ -41,53 +44,62 @@ export interface SettingHook {
   themeSetting: IThemeSettings;
   themeSettingHandlers: {
     toggleDarkMode: () => void;
-    themeSettingHandler: (darkMode: boolean, pomodoroColor: ThemeEnum, shortBreakColor: ThemeEnum) => void;
+    themeSettingHandler: (
+      darkMode: boolean,
+      pomodoroColor: ThemeEnum,
+      shortBreakColor: ThemeEnum
+    ) => void;
   };
 }
 
 const useSetting = (): SettingHook => {
   // Timer Setting
-  const [timerSetting, setTimerSetting] = useLocalStorage<ITimerSetting>('timer-setting', {
-    pomodoroDuration: 30, // in minutes
-    breakDuration: 5, // in minutes
-    autoStartBreak: false,
-    autoStartPomodoros: false,
-  });
+  const [timerSetting, setTimerSetting] = useLocalStorage<ITimerSetting>(
+    "timer-setting",
+    {
+      pomodoroDuration: 30, // in minutes
+      breakDuration: 5, // in minutes
+      autoStartBreak: false,
+      autoStartPomodoros: false
+    }
+  );
 
   const timerSettingHandler = (
     pomodoroDuration: number,
     breakDuration: number,
     autoStartBreak: boolean,
-    autoStartPomodoros: boolean,
+    autoStartPomodoros: boolean
   ) => {
     setTimerSetting({
       ...timerSetting,
       pomodoroDuration: pomodoroDuration,
       breakDuration: breakDuration,
       autoStartBreak: autoStartBreak,
-      autoStartPomodoros: autoStartPomodoros,
+      autoStartPomodoros: autoStartPomodoros
     });
   };
 
   // Sound Settings
-  const [soundSetting, setSoundSetting] = useLocalStorage<ISoundSetting>('sound-setting', {
-    // should take an alarm sound enum that contains 5 sound options -> which we can do alarmSound[alarmSoundType] -> gives us the sound
-    // should take a ticking sound enum that contains 5 sound options -> which we can do tickingSound[tickingSoundType] -> gives us the sound
-    alarmSoundVolume: 100,
-    alarmSoundType: AlarmSoundEnum.BELL,
-    tickingSoundType: TickingSoundEnum.NONE,
-  });
-
+  const [soundSetting, setSoundSetting] = useLocalStorage<ISoundSetting>(
+    "sound-setting",
+    {
+      // should take an alarm sound enum that contains 5 sound options -> which we can do alarmSound[alarmSoundType] -> gives us the sound
+      // should take a ticking sound enum that contains 5 sound options -> which we can do tickingSound[tickingSoundType] -> gives us the sound
+      alarmSoundVolume: 100,
+      alarmSoundType: AlarmSoundEnum.BELL,
+      tickingSoundType: TickingSoundEnum.NONE
+    }
+  );
 
   const soundSettingHandler = (
     alarmSoundVolume: number,
-    alarmSoundType: AlarmSoundEnum,
+    alarmSoundType: AlarmSoundEnum
   ) => {
     setSoundSetting({
       ...soundSetting,
       alarmSoundVolume: alarmSoundVolume,
-      alarmSoundType: alarmSoundType,
-    })
+      alarmSoundType: alarmSoundType
+    });
   };
 
   const setAlarmSoundVolume = (volume: number) => {
@@ -102,53 +114,63 @@ const useSetting = (): SettingHook => {
   };
 
   // Task Settings
-  const [taskSetting, setTaskSetting] = useLocalStorage<ITaskSetting>('task-setting', {
-    autoCheckTasks: false,
-    autoSwitchTasks: false,
-  });
+  const [taskSetting, setTaskSetting] = useLocalStorage<ITaskSetting>(
+    "task-setting",
+    {
+      autoCheckTasks: false,
+      autoSwitchTasks: false
+    }
+  );
 
   const taskSettingHandler = (
     autoCheckTasks: boolean,
-    autoSwitchTasks: boolean,
+    autoSwitchTasks: boolean
   ) => {
     setTaskSetting({
       ...taskSetting,
       autoCheckTasks: autoCheckTasks,
-      autoSwitchTasks: autoSwitchTasks,
-    })
+      autoSwitchTasks: autoSwitchTasks
+    });
   };
 
   const toggleAutoCheckTasks = () => {
     setTaskSetting({
       ...taskSetting,
-      autoCheckTasks: !taskSetting.autoCheckTasks,
+      autoCheckTasks: !taskSetting.autoCheckTasks
     });
   };
 
   const toggleAutoSwitchTasks = () => {
     setTaskSetting({
       ...taskSetting,
-      autoSwitchTasks: !taskSetting.autoSwitchTasks,
+      autoSwitchTasks: !taskSetting.autoSwitchTasks
     });
   };
 
-  const [themeSetting, setThemeSetting] = useLocalStorage<IThemeSettings>('theme-settting', {
-    darkModeWhenRunning: false,
-    themes: {
-      // should have a theme enum that contain 5 color options -> which we can do themes[color] -> gives us the theme color
-      [TimerModeEnum.POMODORO]: ThemeEnum.RED,
-      [TimerModeEnum.BREAK]: ThemeEnum.BLUE,
-    },
-  });
+  const [themeSetting, setThemeSetting] = useLocalStorage<IThemeSettings>(
+    "theme-settting",
+    {
+      darkModeWhenRunning: false,
+      themes: {
+        // should have a theme enum that contain 5 color options -> which we can do themes[color] -> gives us the theme color
+        [TimerModeEnum.POMODORO]: ThemeEnum.RED,
+        [TimerModeEnum.BREAK]: ThemeEnum.BLUE
+      }
+    }
+  );
 
   const toggleDarkMode = () => {
     setThemeSetting({
       ...themeSetting,
-      darkModeWhenRunning: !themeSetting.darkModeWhenRunning,
+      darkModeWhenRunning: !themeSetting.darkModeWhenRunning
     });
   };
 
-  const themeSettingHandler = (darkMode: boolean, pomodoroColor: ThemeEnum, shortBreakColor: ThemeEnum) => {
+  const themeSettingHandler = (
+    darkMode: boolean,
+    pomodoroColor: ThemeEnum,
+    shortBreakColor: ThemeEnum
+  ) => {
     setThemeSetting({
       darkModeWhenRunning: darkMode,
       themes: {
@@ -166,19 +188,19 @@ const useSetting = (): SettingHook => {
       soundSettingHandler,
       setAlarmSoundVolume,
       setAlarmSoundType,
-      setTickingSoundType,
+      setTickingSoundType
     },
     taskSetting,
     taskSettingHandlers: {
       taskSettingHandler,
       toggleAutoCheckTasks,
-      toggleAutoSwitchTasks,
+      toggleAutoSwitchTasks
     },
     themeSetting,
     themeSettingHandlers: {
       toggleDarkMode,
       themeSettingHandler
-    },
+    }
   };
 };
 

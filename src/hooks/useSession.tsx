@@ -10,7 +10,7 @@ export interface SessionHook {
 
 // To keep track of the user sessions for every completed Pomodoro session
 const useSession = (): SessionHook => {
-  const [sessionCount, setSessionCount] = useLocalStorage('session-count', 0);
+  const [sessionCount, setSessionCount] = useLocalStorage("session-count", 0);
 
   const increment = (condition?: boolean) => {
     if (condition === undefined || condition) {

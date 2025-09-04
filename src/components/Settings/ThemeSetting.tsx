@@ -13,29 +13,52 @@ const ThemeSetting = () => {
 
       <label className="flex items-center justify-between" htmlFor="dark-mode">
         <span>Dark Mode when running</span>
-        <input className="checkbox" type="checkbox" name="dark-mode" id="dark-mode"
-               defaultChecked={setting.themeSetting.darkModeWhenRunning} />
+        <input
+          className="checkbox"
+          type="checkbox"
+          name="dark-mode"
+          id="dark-mode"
+          defaultChecked={setting.themeSetting.darkModeWhenRunning}
+        />
       </label>
 
-      <label className="flex items-center justify-between" htmlFor="pomodoro-bg-color">
+      <label
+        className="flex items-center justify-between"
+        htmlFor="pomodoro-bg-color"
+      >
         <span>Pomodoro Background Color</span>
-        <select name="pomodoro-bg-color" id="pomodoro-bg-color" defaultValue={setting.themeSetting.themes.pomodoro}>
-          {
-            colors.map((color, index) => <option key={index} value={index}>{color.toLowerCase()}</option>)
-          }
+        <select
+          name="pomodoro-bg-color"
+          id="pomodoro-bg-color"
+          defaultValue={setting.themeSetting.themes.pomodoro}
+        >
+          {colors.map((color, index) => (
+            <option key={index} value={index}>
+              {color.toLowerCase()}
+            </option>
+          ))}
         </select>
       </label>
 
-      <label className="flex items-center justify-between" htmlFor="short-break-bg-color">
+      <label
+        className="flex items-center justify-between"
+        htmlFor="short-break-bg-color"
+      >
         <span>Short Break Background Color</span>
-        <select name="short-break-bg-color" id="short-break-bg-color" defaultValue={setting.themeSetting.themes.break}>
-          {
-            colors.map((color, index) => <option key={index} value={index}>{color.toLowerCase()}</option>)
-          }
+        <select
+          name="short-break-bg-color"
+          id="short-break-bg-color"
+          defaultValue={setting.themeSetting.themes.break}
+        >
+          {colors.map((color, index) => (
+            <option key={index} value={index}>
+              {color.toLowerCase()}
+            </option>
+          ))}
         </select>
       </label>
     </div>
   );
 };
 
-export { ThemeSetting }
+export { ThemeSetting };

@@ -7,7 +7,10 @@ const extractFormData = (form: HTMLFormElement): TodoFormData => {
     title: formData.get("title") as string,
     description: formData.get("description") as string,
     targetSessions: parseInt(formData.get("targetSessions") as string, 10),
-    completedSessions: parseInt(formData.get("completedSessions") as string, 10),
+    completedSessions: parseInt(
+      formData.get("completedSessions") as string,
+      10
+    )
   };
 };
 

@@ -5,7 +5,9 @@ import { DatabaseAdapter, LocalStorageAdapter, UserData } from "../services/Stor
 export const useData = () => {
   const user = useAuth();
   const [data, setData] = useState<UserData | null>(null);
-  const [adapter, setAdapter] = useState<DatabaseAdapter | LocalStorageAdapter | null>(null);
+  const [adapter, setAdapter] = useState<
+    DatabaseAdapter | LocalStorageAdapter | null
+  >(null);
 
   useEffect(() => {
     const fetchData = async () => {

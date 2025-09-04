@@ -1,3 +1,4 @@
+import * as React from "react";
 import { forwardRef, useState } from "react";
 import { SettingsHeader } from "./SettingsHeader";
 import { TimerSetting } from "./TimerSetting";
@@ -5,7 +6,6 @@ import { SoundSetting } from "./SoundSetting";
 import { TaskSetting } from "./TaskSetting";
 import { SettingsFooter } from "./SettingsFooter";
 import { useSettingContext } from "@/context";
-import * as React from "react";
 import { ThemeSetting } from "@/components/Settings/ThemeSetting.tsx";
 
 type SettingProps = object;
@@ -27,25 +27,24 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
     const form = e.currentTarget as HTMLFormElement;
     const settingFormData = new FormData(form);
 
-
     // Update timer setting
     setting.timerSettingHandler(
       Number(settingFormData.get("pomodoro-duration")!),
       Number(settingFormData.get("break-duration")!),
       Boolean(settingFormData.get("auto-start-break")!),
-      Boolean(settingFormData.get("auto-start-pomodoro")!),
+      Boolean(settingFormData.get("auto-start-pomodoro")!)
     );
 
     // Update task setting
     setting.taskSettingHandlers.taskSettingHandler(
-      Boolean(settingFormData.get('auto-check-tasks')),
-      Boolean(settingFormData.get('auto-switch-tasks')),
+      Boolean(settingFormData.get("auto-check-tasks")),
+      Boolean(settingFormData.get("auto-switch-tasks"))
     );
 
     // Update sound setting
     setting.soundSettingHandlers.soundSettingHandler(
-      Number(settingFormData.get('alarm-sound-volume')),
-      Number(settingFormData.get('alarm-sound')),
+      Number(settingFormData.get("alarm-sound-volume")),
+      Number(settingFormData.get("alarm-sound"))
     );
 
     // Update theme setting
@@ -54,7 +53,7 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
       Number(settingFormData.get("pomodoro-bg-color")),
       Number(settingFormData.get("short-break-bg-color"))
     );
-  }
+  };
 
   return (
     <dialog
@@ -64,7 +63,7 @@ const Settings = forwardRef<Ref, SettingProps>((_, ref) => {
     >
       <form
         method="dialog"
-        onChange={handleFormChange} 
+        onChange={handleFormChange}
         onSubmit={handleFormSubmit}
       >
         <SettingsHeader dialogRef={ref as React.RefObject<HTMLDialogElement>} />

@@ -17,14 +17,17 @@ export interface TimerHook {
   handleBreakMode: () => void;
 }
 
-const useTimer = (
-  setting: SettingHook,
-  onTimerEnd?: () => void,
-): TimerHook => {
+const useTimer = (setting: SettingHook, onTimerEnd?: () => void): TimerHook => {
   // States
-  const [elapsedTime, setElapsedTime] = useLocalStorage('elapsedTime', 0);
-  const [isTimerRunning, setIsTimerRunning] = useLocalStorage('isTimerRunning', false);
-  const [mode, setMode] = useLocalStorage<TimerModeEnum>('timer-mode', TimerModeEnum.POMODORO);
+  const [elapsedTime, setElapsedTime] = useLocalStorage("elapsedTime", 0);
+  const [isTimerRunning, setIsTimerRunning] = useLocalStorage(
+    "isTimerRunning",
+    false
+  );
+  const [mode, setMode] = useLocalStorage<TimerModeEnum>(
+    "timer-mode",
+    TimerModeEnum.POMODORO
+  );
 
   // Derived variables
   const MINUTE = 60;
@@ -61,7 +64,10 @@ const useTimer = (
     }
 
     function notifyUser() {
-      playAlarmSound(setting.soundSetting.alarmSoundType, setting.soundSetting.alarmSoundVolume);
+      playAlarmSound(
+        setting.soundSetting.alarmSoundType,
+        setting.soundSetting.alarmSoundVolume
+      );
       showToast("You have finish a session!", "success");
     }
 
@@ -71,8 +77,10 @@ const useTimer = (
 
     function shouldAutoStart(nextMode: TimerModeEnum) {
       return (
-        (setting.timerSetting.autoStartBreak && nextMode === TimerModeEnum.BREAK) ||
-        (setting.timerSetting.autoStartPomodoros && nextMode === TimerModeEnum.POMODORO)
+        (setting.timerSetting.autoStartBreak &&
+          nextMode === TimerModeEnum.BREAK) ||
+        (setting.timerSetting.autoStartPomodoros &&
+          nextMode === TimerModeEnum.POMODORO)
       );
     }
   }, [
@@ -99,7 +107,7 @@ const useTimer = (
   const resetTimer = () => {
     setIsTimerRunning(false);
     setElapsedTime(0);
-  }
+  };
 
   /******************/
   /* Timer Effects  */
@@ -147,7 +155,7 @@ const useTimer = (
     handleToggle,
     handleNextMode,
     handlePomodoroMode,
-    handleBreakMode,
+    handleBreakMode
   };
 };
 

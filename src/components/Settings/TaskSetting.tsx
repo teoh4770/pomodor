@@ -9,14 +9,32 @@ const TaskSetting = () => {
         Task
       </h3>
 
-      <label className="flex items-center justify-between" htmlFor="auto-check-tasks">
+      <label
+        className="flex items-center justify-between"
+        htmlFor="auto-check-tasks"
+      >
         <span>Auto Check Tasks</span>
-        <input type="checkbox" name="auto-check-tasks" id="auto-check-tasks" className="checkbox" defaultChecked={taskSetting.autoCheckTasks}/>
+        <input
+          type="checkbox"
+          name="auto-check-tasks"
+          id="auto-check-tasks"
+          className="checkbox"
+          defaultChecked={taskSetting.autoCheckTasks}
+        />
       </label>
 
-      <label className="flex items-center justify-between" htmlFor="auto-switch-tasks">
+      <label
+        className="flex items-center justify-between"
+        htmlFor="auto-switch-tasks"
+      >
         <span>Auto Switch Tasks</span>
-        <input className="checkbox" type="checkbox" name="auto-switch-tasks" id="auto-switch-tasks" defaultChecked={taskSetting.autoSwitchTasks} />
+        <input
+          className="checkbox"
+          type="checkbox"
+          name="auto-switch-tasks"
+          id="auto-switch-tasks"
+          defaultChecked={taskSetting.autoSwitchTasks}
+        />
       </label>
     </div>
   );

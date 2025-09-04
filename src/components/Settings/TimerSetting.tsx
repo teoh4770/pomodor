@@ -40,7 +40,12 @@ const TimerSetting = () => {
 
       <label className="flex items-center justify-between">
         <span>Auto Start Breaks</span>
-        <input type="checkbox" name="auto-start-break" className="checkbox" defaultChecked={timerSetting.autoStartBreak} />
+        <input
+          type="checkbox"
+          name="auto-start-break"
+          className="checkbox"
+          defaultChecked={timerSetting.autoStartBreak}
+        />
       </label>
 
       <label className="flex items-center justify-between">

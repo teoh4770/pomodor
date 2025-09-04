@@ -28,7 +28,6 @@ export const Auth = () => {
 
   const handleLogout = async () => {
     try {
-
       await logout();
       setError("");
     } catch (err: any) {
