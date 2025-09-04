@@ -41,7 +41,6 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
     return null;
   }, [user]);
 
-
   // States with default values for logged-out users
   const [todos, setTodos] = useLocalStorage<ITodo[]>("todos", []);
   const [selectedTodoId, setSelectedTodoId] = useLocalStorage('selected-todo-id', '');
@@ -90,7 +89,7 @@ const useTodo = (user: User | null, timerSetting: ITimerSetting, taskSetting: IT
     getTodos();
     getSelectedTodoId();
     getCurrentViewType();
-  }, []);
+  }, [user]);
 
   // Derived variables
   const selectedTodo = todos.find((todo) => todo.id === selectedTodoId) || null;
