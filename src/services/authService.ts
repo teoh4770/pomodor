@@ -17,40 +17,41 @@ export const registerAndInitData = async (email: string, password: string) => {
 
   // Initialise default user data if it does not exist
   const existingData = await adapter.getData(userCredential.user.uid);
+  const defaultUserData = {
+    timerSetting: {
+      pomodoroDuration: 15,
+      breakDuration: 30,
+      autoStartBreak: false,
+      autoStartPomodoros: false
+    },
+    timerMode: TimerModeEnum.POMODORO,
+    currentViewType: TodosViewTypeEnum.ALL,
+    elapsedTime: 0,
+    isTimerRunning: false,
+    selectedTodoId: "",
+    sessionCount: 0,
+    soundSetting: {
+      alarmSoundVolume: 50,
+      alarmSoundType: AlarmSoundEnum.DIGITAL,
+      tickingSoundType: TickingSoundEnum.NONE
+    },
+    taskSetting: {
+      autoCheckTasks: false,
+      autoSwitchTasks: false
+    },
+    themeSetting: {
+      darkModeWhenRunning: true,
+      themes: {
+        pomodoro: 0,
+        break: 1
+      }
+    },
+    todos: []
+  };
   if (!existingData) {
     // Todo: extract the default value for User Data
     await adapter.setData(
-      {
-        timerSetting: {
-          pomodoroDuration: 15,
-          breakDuration: 30,
-          autoStartBreak: false,
-          autoStartPomodoros: false
-        },
-        timerMode: TimerModeEnum.POMODORO,
-        currentViewType: TodosViewTypeEnum.ALL,
-        elapsedTime: 0,
-        isTimerRunning: false,
-        selectedTodoId: "",
-        sessionCount: 0,
-        soundSetting: {
-          alarmSoundVolume: 50,
-          alarmSoundType: AlarmSoundEnum.DIGITAL,
-          tickingSoundType: TickingSoundEnum.NONE
-        },
-        taskSetting: {
-          autoCheckTasks: false,
-          autoSwitchTasks: false
-        },
-        themeSetting: {
-          darkModeWhenRunning: true,
-          themes: {
-            pomodoro: 0,
-            break: 1
-          }
-        },
-        todos: []
-      },
+      defaultUserData,
       userCredential.user.uid
     );
   }
