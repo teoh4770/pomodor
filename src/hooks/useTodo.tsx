@@ -128,12 +128,12 @@ const useTodo = (
       todos.length > 0 && todos.every((todo) => todo.completed);
 
     const totalSessions = todos.reduce(
-      (acc, todo) => acc + todo.targetSessions,
+      (acc, todo) => todo.completed || todo.completedSessions >= todo.targetSessions ? acc : acc + todo.targetSessions,
       0
     );
 
     const completedSessions = todos.reduce(
-      (acc, todo) => (todo.completed ? acc : acc + todo.completedSessions),
+      (acc, todo) => todo.completed || todo.completedSessions >= todo.targetSessions ? acc : acc + todo.completedSessions,
       0
     );
 
