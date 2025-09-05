@@ -4,16 +4,9 @@ const SignupPage = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[var(--primary-color)] text-white">
       <div className="w-full max-w-sm rounded-lg bg-white p-8 text-center text-black shadow-lg">
-        <h1 className="mb-2 text-2xl font-bold">Pomofocus</h1>
+        <h1 className="mb-2 text-2xl font-bold">Pomodor</h1>
         <h2 className="mb-6 text-lg">Create Account</h2>
         <form>
-          <button
-            type="button"
-            className="mb-4 w-full rounded border border-gray-300 bg-white py-2 font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
-          >
-            G Signup with Google
-          </button>
-          <div className="mb-4 text-sm text-gray-500">OR</div>
           <div className="text-left">
             <label
               htmlFor="email"
@@ -28,6 +21,20 @@ const SignupPage = () => {
               className="mb-4 w-full rounded border border-gray-300 bg-gray-100 p-2 focus:outline-none focus:ring-2 focus:ring-red-400"
             />
           </div>
+          <div className="text-left">
+            <label
+              htmlFor="password"
+              className="mb-1 block text-xs font-bold uppercase text-gray-600"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              placeholder="********"
+              className="mb-4 w-full rounded border border-gray-300 bg-gray-100 p-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+            />
+          </div>
           <button
             type="submit"
             className="mt-6 w-full rounded bg-gray-800 py-2 font-bold text-white hover:bg-gray-700"
@@ -38,7 +45,7 @@ const SignupPage = () => {
       </div>
       <p className="mt-6 text-sm">
         Already have an account?{" "}
-        <Link to="/login" className="font-bold underline">
+        <Link to="/pomodor/login" className="font-bold underline">
           Log in
         </Link>
       </p>
