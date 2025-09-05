@@ -101,7 +101,6 @@ const useTodo = (
     persistUserData(stateToPersist);
   }, [currentViewType, selectedTodoId, todos, userDocRef]);
 
-
   // Derived variables
   const selectedTodo = useMemo(
     () => todos.find((todo) => todo.id === selectedTodoId) || null,
@@ -161,7 +160,6 @@ const useTodo = (
   }, [todos, timerSetting]);
 
   // Todo handlers
-
 
   function selectTodo(todoId: string) {
     setSelectedTodoId(todoId);
@@ -225,7 +223,6 @@ const useTodo = (
       updatesToPersist.selectedTodoId = selectedTodo.id;
     }
 
-
     setTodos(updatedTodos);
     if (selectedTodo) {
       setSelectedTodoId(selectedTodo.id);
@@ -258,7 +255,8 @@ const useTodo = (
   function clearCompletedTodos() {
     const incompleteTodos = todos.filter((todo) => !todo.completed);
 
-    const { todos: finalTodos, newSelectedId } = applyAutoSwitch(incompleteTodos);
+    const { todos: finalTodos, newSelectedId } =
+      applyAutoSwitch(incompleteTodos);
 
     setTodos(finalTodos);
     if (newSelectedId) {
