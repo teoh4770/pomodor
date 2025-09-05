@@ -13,15 +13,15 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: "/",
+        path: "/pomodor/",
         element: <App />
       },
       {
-        path: "login",
+        path: "/pomodor/login",
         element: <LoginPage />
       },
       {
-        path: "signup",
+        path: "/pomodor/signup",
         element: <SignupPage />
       }
     ]
@@ -31,5 +31,6 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
+    {/*<App />*/}
   </StrictMode>
 );
