@@ -1,7 +1,7 @@
 import { auth } from "./firebase.ts";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { DatabaseAdapter } from "@/services/StorageAdapterService.ts";
-import { AlarmSoundEnum, TickingSoundEnum, TodosViewTypeEnum } from "@/types";
+import { AlarmSoundEnum, TickingSoundEnum, TimerModeEnum, TodosViewTypeEnum } from "@/types";
 
 export const register = (email: string, password: string) =>
   createUserWithEmailAndPassword(auth, email, password);
@@ -18,8 +18,16 @@ export const registerAndInitData = async (email: string, password: string) => {
   // Initialise default user data if it does not exist
   const existingData = await adapter.getData(userCredential.user.uid);
   if (!existingData) {
+    // Todo: extract the default value for User Data
     await adapter.setData(
       {
+        timerSetting: {
+          pomodoroDuration: 15,
+          breakDuration: 30,
+          autoStartBreak: false,
+          autoStartPomodoros: false
+        },
+        timerMode: TimerModeEnum.POMODORO,
         currentViewType: TodosViewTypeEnum.ALL,
         elapsedTime: 0,
         isTimerRunning: false,
