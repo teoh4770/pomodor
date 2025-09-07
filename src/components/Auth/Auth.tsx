@@ -1,67 +1,49 @@
-import { useState } from "react";
+import UserWhite from "/user-solid-white.png";
+import LogoutWhite from "/logout-solid-white.png";
+
 import { useAuth } from "@/hooks";
-import { login, registerAndInitData, logout } from "@/services/authService.ts";
+import { logout } from "@/services/authService.ts";
+import { Link } from "react-router-dom";
 
 export const Auth = () => {
   const user = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleLogin = async () => {
-    try {
-      await login(email, password);
-      setError("");
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  const handleRegister = async () => {
-    try {
-      await registerAndInitData(email, password);
-      setError("");
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      setError("");
-    } catch (err: any) {
-      setError(err.message);
-    }
+    await logout();
   };
 
   return (
-    <div>
-      <h2>Auth</h2>
+    <>
       {user ? (
-        <div>
-          <p>Welcome, {user.email}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
+        <button
+          type="button"
+          className="button"
+          data-type="secondary"
+          data-size="sm"
+          onClick={handleLogout}
+        >
+          <div className="flex items-center gap-1">
+            <img className="aspect-square h-4 w-4" src={LogoutWhite} alt="" />
+            <span className="hidden md:inline">Log Out</span>
+          </div>
+        </button>
       ) : (
         <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button onClick={handleLogin}>Login</button>
-          <button onClick={handleRegister}>Register</button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          <Link to="/pomodor/login">
+            <button
+              type="button"
+              className="button"
+              data-type="secondary"
+              data-size="sm"
+            >
+              <div className="flex items-center gap-1">
+                <img className="aspect-square h-4 w-4" src={UserWhite} alt="" />
+                <span className="hidden md:inline">Sign In</span>
+              </div>
+            </button>
+          </Link>
         </div>
       )}
-    </div>
+    </>
   );
 };

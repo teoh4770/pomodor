@@ -1,9 +1,11 @@
+import ConfigWhite from "/config-solid-white.png";
+import AnalyticsWhite from "/analytics-solid-white.png";
+
 import { Logo } from "./Logo";
 import { TimerProgress } from "./TimerProgress";
-import ConfigWhite from "/config-white.png";
-import GraphWhite from "/graph-white.png";
 import { Settings } from "@/components";
 import { useRef } from "react";
+import { Auth } from "@/components/Auth/Auth.tsx";
 
 const Header = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -21,8 +23,8 @@ const Header = () => {
           data-size="sm"
         >
           <div className="flex items-center gap-1">
-            <img className="aspect-square h-4 w-4" src={GraphWhite} alt="" />
-            <span>Report</span>
+            <img className="aspect-square h-4 w-4" src={AnalyticsWhite} alt="" />
+            <span className="hidden md:inline">Report</span>
           </div>
         </button>
 
@@ -36,18 +38,11 @@ const Header = () => {
         >
           <div className="flex items-center gap-1">
             <img className="aspect-square h-4 w-4" src={ConfigWhite} alt="" />
-            <span>Setting</span>
+            <span className="hidden md:inline">Setting</span>
           </div>
         </button>
 
-        <button
-          type="button"
-          className="button"
-          data-type="secondary"
-          data-size="sm"
-        >
-          Profile
-        </button>
+        <Auth />
       </div>
 
       <TimerProgress />
